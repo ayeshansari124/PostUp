@@ -5,88 +5,129 @@
   <title>Profile</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
   <style>
-    body {
-      background: #000;
+    body, .bg-main {
+      background: #18181b !important;
     }
-
     .card-glass {
-      background: rgba(30,30,30,0.22);
-      border: 1.5px solid rgba(255,255,255,0.15);
-      box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+      background: rgba(39, 39, 42, 0.26);
+      border: 1.5px solid rgba(244,244,245,0.11);
+      box-shadow: 0 4px 32px 0 rgba(24,24,27,0.13);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      color: #fff;
+      transition: background 0.2s, box-shadow 0.2s;
     }
     .card-glass:hover {
-      background: rgba(50,50,50,0.3);
-      border-color: rgba(255,255,255,0.28);
-      box-shadow: 0 8px 36px rgba(0,0,0,0.28);
+      background: rgba(39, 39, 44, 0.39);
+      border-color: rgba(244,244,245,0.18);
+      box-shadow: 0 8px 36px 0 rgba(39,39,42,0.17);
+    }
+    .card-glass textarea,
+    .card-glass input {
+      background: transparent;
+      color: #fff;
+    }
+    .card-glass textarea::placeholder,
+    .card-glass input::placeholder {
+      color: #a1a1aa;
+    }
+    button,
+    label[for],
+    .custom-btn,
+    input[type="submit"] {
+      cursor: pointer !important;
+      transition: transform 0.18s, background 0.18s, color 0.18s, border-color 0.18s;
+    }
+    button:hover, button:focus,
+    input[type="submit"]:hover, input[type="submit"]:focus,
+    label[for]:hover, label[for]:focus,
+    .custom-btn:hover, .custom-btn:focus {
+      transform: scale(1.06);
+      filter: brightness(1.1);
+      outline: none;
+      box-shadow: 0 4px 18px 0 rgba(0,0,0,0.10);
+    }
+    a {
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.17s, color 0.18s, text-decoration-color 0.17s, box-shadow 0.16s;
+      border-bottom: 2px solid transparent;
+    }
+    a:hover, a:focus-visible {
+      color: #60a5fa !important;
+      border-bottom: 2px solid #60a5fa;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+      outline: none;
+      box-shadow: 0 2px 12px 0 rgba(39,39,42,0.17);
+    }
+    .icon-click:hover svg, .icon-click:focus svg,
+    button:hover svg, button:focus svg,
+    a:hover svg, a:focus svg {
+      filter: brightness(1.33) drop-shadow(0 1px 3px #3b82f619);
+      transform: scale(1.18);
+    }
+    .icon-click, .icon-click * {
+      cursor: pointer;
     }
   </style>
 </head>
 
-<body class="text-white">
+<body class="relative min-h-screen bg-main text-white">
   <%- include('partials/header', { user: user }) %>
 
   <% const displayed = profileUser || user; %>
 
-  <div class="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-4 gap-8 mt-6">
+  <div class="max-w-7xl mx-auto px-2 sm:px-4 py-4 md:py-6 mt-6 grid grid-cols-1 md:grid-cols-4 md:gap-8 gap-4">
 
     <!-- LEFT SIDEBAR -->
-    <div class="col-span-1 md:sticky md:top-24 md:h-fit">
-
-      <div class="card-glass p-6 rounded-2xl text-center">
-
+    <div class="col-span-1 mb-6 md:mb-0 md:sticky md:top-24 md:h-fit">
+      <div class="card-glass p-4 sm:p-6 rounded-2xl text-center flex flex-col items-center">
         <img 
           src="<%= displayed.profile || '/profile/defaultProfile.png' %>"
-          class="w-40 h-40 rounded-full mx-auto mb-4 object-cover border-4 border-white/20"
+          class="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full mb-4 object-cover border-4 border-white/20"
         />
-
-        <div class="text-2xl font-bold"><%= displayed.name %></div>
-
-        <div class="text-zinc-400 mt-1 mb-4">
+        <div class="text-xl sm:text-2xl font-bold mb-1 break-words"><%= displayed.name %></div>
+        <div class="text-zinc-400 text-sm sm:text-base mb-4">
           Joined <%= new Date(displayed.createdAt).toLocaleDateString() %>
         </div>
-
         <% if (!profileUser) { %>
           <form action="/profile/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="profile" accept="image/*" class="hidden" id="profileUploadInput" onchange="this.form.submit()" />
-
             <label for="profileUploadInput"
-              class="cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold inline-block">
-              Upload Photo
+              class="cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold inline-block transition transform hover:scale-105"
+              tabindex="0"
+              style="transition: transform 0.18s, background 0.18s;"
+              >Upload Photo
             </label>
           </form>
         <% } %>
-
       </div>
-
     </div>
 
     <!-- RIGHT SIDE -->
-    <div class="col-span-1 md:col-span-3">
-
+    <div class="col-span-1 md:col-span-3 flex flex-col gap-4">
       <!-- CREATE POST (Feed style) -->
-      <form action="/post" method="POST" class="flex flex-row gap-2 w-full mb-8 items-center">
+      <form action="/post" method="POST" class="flex flex-col sm:flex-row gap-2 w-full mb-6 sm:mb-8 items-stretch sm:items-center">
         <textarea
           name="content"
           placeholder="Post anything..."
-          class="outline-none bg-black flex-1 px-3 py-3 text-white rounded-lg text-base placeholder-gray-400 border-2 border-zinc-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-300 resize-none"
+          class="outline-none flex-1 px-3 py-3 text-white rounded-lg text-base placeholder-zinc-400 border-2 border-zinc-700 bg-transparent focus:border-blue-400 focus:ring-2 focus:ring-blue-300 resize-none"
           rows="2"
-          style="min-width: 0; box-shadow:none; border-width:2px; border-color:#71717a;"
+          style="min-width: 0; box-shadow:none; border-width:2px;"
         ></textarea>
         <button
           type="submit"
-          class="flex items-center gap-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
+          class="flex items-center justify-center gap-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold transition transform hover:scale-105 self-end sm:self-auto"
           style="box-shadow:none;"
         >
           Post
         </button>
       </form>
 
-      <h2 class="text-2xl font-semibold mb-5">Posts</h2>
+      <h2 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-5">Posts</h2>
 
       <% const posts = displayed.posts || []; %>
 
@@ -94,45 +135,37 @@
         <div class="text-zinc-400">No posts yet.</div>
       <% } %>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-
+      <!-- Responsive posts grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         <% posts.forEach(function(post) { %>
-
-          <div class="card-glass p-4 rounded-2xl flex flex-col">
-
+          <div class="card-glass p-3 sm:p-4 rounded-2xl flex flex-col">
             <% if (editPostId && editPostId === String(post._id) && (!profileUser || String(profileUser._id) === String(user._id))) { %>
-
               <form action="/posts/<%= post._id %>/edit" method="post" class="flex flex-col gap-3">
                 <textarea
                   name="content"
-                  class="w-full p-3 rounded-xl bg-zinc-800 text-white border border-white/10"
+                  class="w-full p-2 sm:p-3 rounded-xl bg-zinc-800 text-white border border-white/10 text-base"
                   rows="4"
                 ><%= post.content %></textarea>
-
-                <div class="flex gap-2">
-                  <button class="bg-blue-600 px-4 py-2 rounded-xl">Save</button>
-                  <a href="/profile" class="bg-zinc-600 px-4 py-2 rounded-xl">Cancel</a>
+                <div class="flex gap-2 flex-wrap">
+                  <button class="bg-blue-600 px-4 py-2 rounded-xl transition transform hover:scale-105 hover:bg-blue-700 font-semibold">Save</button>
+                  <a href="/profile" class="bg-zinc-600 px-4 py-2 rounded-xl transition transform hover:scale-105 hover:bg-zinc-700 font-semibold inline-flex items-center justify-center">Cancel</a>
                 </div>
               </form>
-
             <% } else { %>
-
-              <div class="text-white/95 text-lg mb-2 break-words">
+              <div class="text-white/95 text-base sm:text-lg mb-2 break-words">
                 <%= post.content %>
               </div>
-
               <!-- CREATED TIME -->
-              <div class="text-xs text-zinc-400 mb-4">
+              <div class="text-xs text-zinc-400 mb-3 sm:mb-4">
                 <%= new Date(post.createdAt).toLocaleString() %>
               </div>
-
-              <div class="flex items-center gap-3 mt-auto">
-
-                <form action="/posts/<%= post._id %>/like" method="post">
+              <div class="flex items-center gap-3 mt-auto flex-wrap">
+                <form action="/posts/<%= post._id %>/like" method="post" class="icon-click">
                   <% const liked = (post.likes || []).map(l => String(l)).includes(String(user._id)); %>
-                  <button class="p-1 transition transform hover:scale-110">
+                  <button class="p-1 transition transform hover:scale-125"
+                    title="<%= liked ? 'Unlike' : 'Like' %>">
                     <svg xmlns="http://www.w3.org/2000/svg"
-                      class="w-6 h-6 <%= liked ? 'text-pink-400' : 'text-blue-400' %>"
+                      class="w-6 h-6 <%= liked ? 'text-pink-400' : 'text-blue-400' %> transition-colors"
                       fill="<%= liked ? 'currentColor' : 'none' %>"
                       viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -140,13 +173,11 @@
                     </svg>
                   </button>
                 </form>
-
                 <span class="text-xs text-white ml-1"><%= post.likes.length %></span>
-
                 <% if (String(post.author) === String(user._id)) { %>
-
                   <a href="/posts/<%= post._id %>/edit"
-                    class="ml-auto p-1 transition transform hover:scale-110">
+                    class="ml-auto p-1 icon-click transition transform hover:scale-125 border-b-2 border-transparent hover:border-yellow-400"
+                    title="Edit Post">
                     <svg xmlns="http://www.w3.org/2000/svg"
                       class="w-5 h-5 text-yellow-400"
                       fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -154,9 +185,8 @@
                         d="M16.862 4.487l1.651-1.652a2.1 2.1 0 113 3L11.25 16.1l-4 1 1-4L16.862 4.487z"/>
                     </svg>
                   </a>
-
-                  <form action="/posts/<%= post._id %>/delete" method="post" class="inline">
-                    <button class="p-1 transition transform hover:scale-110">
+                  <form action="/posts/<%= post._id %>/delete" method="post" class="inline icon-click">
+                    <button class="p-1 transition transform hover:scale-125" title="Delete Post">
                       <svg xmlns="http://www.w3.org/2000/svg"
                         class="w-5 h-5 text-pink-400"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,21 +195,13 @@
                       </svg>
                     </button>
                   </form>
-
                 <% } %>
-
               </div>
-
             <% } %>
-
           </div>
-
         <% }); %>
-
       </div>
-
     </div>
   </div>
-
 </body>
 </html>

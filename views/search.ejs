@@ -6,85 +6,114 @@
 
   <!-- Tailwind -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
   <!-- Icons -->
   <script src="https://kit.fontawesome.com/a2e0e6ad48.js" crossorigin="anonymous"></script>
-
   <style>
-    /* Match Feed Page Theme */
-    .glass-card {
-      background: rgba(30,30,30,0.22);
-      border: 1.5px solid rgba(255,255,255,0.15);
-      box-shadow: 0 4px 32px rgba(0,0,0,0.25);
+    body, .bg-main {
+      background: #18181b !important;
+    }
+    .card-glass {
+      background: rgba(39, 39, 42, 0.26);
+      border: 1.5px solid rgba(244,244,245,0.11);
+      box-shadow: 0 4px 32px 0 rgba(24,24,27,0.13);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      transition: background 0.2s, border 0.2s;
+      color: #fff;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
     }
-    .glass-card:hover {
-      background: rgba(50,50,50,0.35);
-      border-color: rgba(255,255,255,0.28);
+    .card-glass:hover, .card-glass:focus-visible {
+      background: rgba(39, 39, 44, 0.39);
+      border-color: rgba(244,244,245,0.18);
+      box-shadow: 0 8px 36px 0 rgba(39,39,42,0.17);
+      transform: translateY(-2px) scale(1.025);
+      outline: none;
+    }
+    .search-button {
+      transition: transform 0.16s, color 0.16s;
+      cursor: pointer;
+    }
+    .search-button:hover, .search-button:focus-visible {
+      color: #60a5fa !important;
+      transform: scale(1.18);
+      outline: none;
+    }
+    .user-link {
+      text-decoration: none;
+      transition: box-shadow 0.18s, border 0.18s, background 0.2s, transform 0.18s;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .user-link:hover, .user-link:focus-visible {
+      box-shadow: 0 12px 44px 0 rgba(39,39,42,0.24);
+      border-bottom: 2px solid #3b82f6;
+      background: rgba(39, 39, 44, 0.49);
+      outline: none;
+      transform: translateY(-2px) scale(1.025);
+      text-decoration: none;
     }
   </style>
 </head>
 
-<body class="bg-black text-white min-h-screen">
+<body class="bg-main text-white min-h-screen">
   
   <%- include('partials/header', { user: user }) %>
 
-  <div class="max-w-3xl mx-auto p-6">
+  <div class="max-w-3xl mx-auto p-4 sm:p-6">
 
     <!-- SEARCH BAR -->
     <form action="/search" method="get" class="mb-8 w-full">
-      <div class="relative w-full">
-
+      <div class="relative w-full flex flex-col sm:flex-row items-stretch gap-2 sm:gap-0">
         <input 
           type="text" 
           name="q" 
           placeholder="Search users..." 
           value="<%= query || '' %>" 
           class="w-full px-5 py-4 pr-14 rounded-2xl bg-zinc-900 text-white text-lg
-                 focus:ring-2 focus:ring-blue-500 focus:outline-none border border-white/10"
+                 focus:ring-2 focus:ring-blue-500 focus:outline-none border border-zinc-700 placeholder-zinc-400
+                 sm:pr-44"
         />
-
+        <!-- Button placement for responsiveness: absolutely positioned on desktop, full width below on mobile -->
         <button 
           type="submit" 
-          class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+          class="search-button absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white focus:outline-none
+                 sm:static sm:right-auto sm:top-auto sm:translate-y-0 sm:ml-[-3.25rem] sm:w-40 sm:h-auto sm:text-lg sm:rounded-2xl sm:bg-blue-600 sm:hover:bg-blue-700 sm:text-white sm:flex sm:items-center sm:justify-center
+                 w-12 h-12 sm:w-auto sm:h-auto mt-2 sm:mt-0"
+          style="z-index:2;"
         >
-          <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+          <span class="block sm:hidden">
+            <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+          </span>
+          <span class="hidden sm:block font-semibold text-white tracking-wide">
+            <i class="fa-solid fa-magnifying-glass mr-2"></i>Search
+          </span>
         </button>
-
       </div>
     </form>
 
     <!-- RESULTS -->
     <% if (!results || results.length === 0) { %>
-
       <div class="text-zinc-400 text-lg text-center">No users found.</div>
-
     <% } else { %>
-
       <div class="flex flex-col gap-4">
-
         <% results.forEach(u => { %>
           <a 
             href="/user/<%= u._id %>" 
-            class="glass-card flex items-center gap-4 p-4 rounded-2xl w-full sm:w-2/3 mx-auto cursor-pointer transition"
+            class="user-link card-glass flex flex-row items-center gap-4 p-4 rounded-2xl w-full transition
+                   sm:w-full md:w-full lg:w-full mx-auto"
+            tabindex="0"
           >
             <img 
               src="<%= u.profile || '/profile/defaultProfile.png' %>" 
-              class="w-14 h-14 rounded-full object-cover border border-white/20"
+              class="w-14 h-14 rounded-full object-cover border-2 border-zinc-700"
+              style="background:rgba(60,60,65,0.19); box-shadow:none; cursor:pointer;"
             />
-
             <div class="flex flex-col">
-              <div class="font-semibold text-xl"><%= u.name %></div>
+              <div class="font-semibold text-xl text-white break-words"><%= u.name %></div>
             </div>
           </a>
         <% }) %>
-
       </div>
-
     <% } %>
-
   </div>
 </body>
 </html>

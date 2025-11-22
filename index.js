@@ -1,10 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const upload= require ('./config/multerConfig.cjs');
+const upload = require('./config/multerConfig.cjs');
 
 const User = require('./models/User');
 const Post = require('./models/Post');
@@ -32,11 +33,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// ensure uploads dir exists
+const fs = require('fs');
+const uploadsDir = path.join(__dirname, 'public', 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
 // --- Auth middleware ---
 function isLoggedIn(req, res, next) {
   const token = req.cookies[COOKIE_NAME];
   if (!token) {
-    // If user expects HTML, redirect to login
     if (req.accepts('html')) return res.redirect('/login');
     return res.status(401).send('Unauthorized');
   }
@@ -51,9 +56,8 @@ function isLoggedIn(req, res, next) {
   }
 }
 
-// --- Routes: simple views for index/login/register (keep minimal) ---
+// --- Simple pages ---
 app.get('/', (req, res) => res.render('index'));
-
 app.get('/register', (req, res) => res.render('register'));
 app.get('/login', (req, res) => res.render('login'));
 
@@ -72,7 +76,7 @@ app.post('/register', async (req, res) => {
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
     res.cookie(COOKIE_NAME, token, { httpOnly: true, sameSite: 'lax' });
 
-    return res.redirect('/profile');
+    return res.redirect('/feed');
   } catch (err) {
     console.error(err);
     return res.status(500).send('Server error');
@@ -94,7 +98,7 @@ app.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
     res.cookie(COOKIE_NAME, token, { httpOnly: true, sameSite: 'lax' });
 
-    return res.redirect('/profile');
+    return res.redirect('/feed');
   } catch (err) {
     console.error(err);
     return res.status(500).send('Server error');
@@ -107,30 +111,62 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-// --- Profile (show posts) ---
-app.get('/profile', isLoggedIn, async (req, res) => {
+// --- Feed (global) ---
+app.get('/feed', isLoggedIn, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).populate({
-      path: 'posts',
-      options: { sort: { createdAt: -1 } }
-    });
+    const posts = await Post.find()
+      .populate('author', 'name profile')
+      .sort({ createdAt: -1 })
+      .lean();
 
-    if (!user) return res.status(404).send('User not found');
+    const user = await User.findById(req.userId).lean();
 
-    // Normalize editPostId
-    const editPostId = req.query.editPostId ? String(req.query.editPostId) : null;
-
-    // Make sure posts are populated as full Post docs (if stored incorrectly)
-    // If user.posts are IDs only, populate them
-    // (The populate above usually handles this.)
-    res.render('profile', { user, editPostId });
+    res.render('feed', { user, posts });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
   }
 });
 
-// --- Create a post ---
+// --- View any user's profile and their posts ---
+app.get('/user/:id', isLoggedIn, async (req, res) => {
+  try {
+    const uid = req.params.id;
+    const profileUser = await User.findById(uid).populate({
+      path: 'posts',
+      options: { sort: { createdAt: -1 } }
+    }).lean();
+    if (!profileUser) return res.status(404).send('User not found');
+
+    const me = await User.findById(req.userId).lean();
+    res.render('profile', { user: me, profileUser, editPostId: null });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// --- My profile (personal) ---
+app.get('/profile', isLoggedIn, async (req, res) => {
+  try {
+    const me = await User.findById(req.userId).populate({
+      path: 'posts',
+      options: { sort: { createdAt: -1 } }
+    }).lean();
+
+    if (!me) return res.status(404).send('User not found');
+
+    // allow editPostId to return to same view
+    const editPostId = req.query.editPostId ? String(req.query.editPostId) : null;
+
+    res.render('profile', { user: me, profileUser: null, editPostId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// --- Create a post (redirect to feed) ---
 app.post('/post', isLoggedIn, async (req, res) => {
   try {
     const content = (req.body.content || '').trim();
@@ -139,21 +175,21 @@ app.post('/post', isLoggedIn, async (req, res) => {
     const post = await Post.create({ author: req.userId, content });
     await User.findByIdAndUpdate(req.userId, { $push: { posts: post._id } });
 
-    res.redirect('/profile');
+    res.redirect('/feed');
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
   }
 });
 
-// --- GET edit link handler: redirects to /profile with editPostId ---
+// --- GET edit link handler for redirecting with editPostId ---
 app.get('/posts/:id/edit', isLoggedIn, async (req, res) => {
   const id = req.params.id;
   if (!id) return res.redirect('/profile');
   return res.redirect(`/profile?editPostId=${id}`);
 });
 
-// --- Submit edit ---
+// --- Submit edit (PUT/POST) ---
 app.post('/posts/:id/edit', isLoggedIn, async (req, res) => {
   try {
     const postId = req.params.id;
@@ -167,6 +203,7 @@ app.post('/posts/:id/edit', isLoggedIn, async (req, res) => {
 
     post.content = content;
     await post.save();
+
     res.redirect('/profile');
   } catch (err) {
     console.error(err);
@@ -174,7 +211,28 @@ app.post('/posts/:id/edit', isLoggedIn, async (req, res) => {
   }
 });
 
+// --- Delete post ---
+app.post('/posts/:id/delete', isLoggedIn, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+
+    if (!post) return res.status(404).send("Post not found");
+    if (String(post.author) !== String(req.userId)) return res.status(403).send("Unauthorized");
+
+    await Post.findByIdAndDelete(postId);
+    await User.findByIdAndUpdate(req.userId, { $pull: { posts: postId } });
+
+    // if user on feed, go back to feed; otherwise profile
+    return res.redirect(req.get('referer') || '/feed');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server error");
+  }
+});
+
 // --- Like (toggle) ---
+// This toggles like and returns to referring page (feed or profile)
 app.post('/posts/:id/like', isLoggedIn, async (req, res) => {
   try {
     const postId = req.params.id;
@@ -185,103 +243,56 @@ app.post('/posts/:id/like', isLoggedIn, async (req, res) => {
     const post = await Post.findById(postId);
     if (!post) return res.status(404).send('Post not found');
 
-    // Convert ObjectId to string for safe comparison
     const alreadyLiked = post.likes.map(l => String(l)).includes(String(userId));
 
     if (alreadyLiked) {
-      // Unlike
       post.likes.pull(userId);
     } else {
-      // Like
       post.likes.push(userId);
     }
 
     await post.save();
-    res.redirect('/profile');
+
+    return res.redirect(req.get('referer') || '/feed');
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
   }
 });
 
-app.get('/posts/:id/edit', isLoggedIn, async (req, res) => {
-    const id = req.params.id;
-    if (!id) return res.redirect('/profile');
-    return res.redirect(`/profile?editPostId=${id}`);
-  });
-
-  app.post('/posts/:id/edit', isLoggedIn, async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const content = (req.body.content || '').trim();
-  
-      if (!content) return res.status(400).send('Content required');
-  
-      const post = await Post.findById(postId);
-      if (!post) return res.status(404).send('Post not found');
-  
-      if (String(post.author) !== String(req.userId))
-        return res.status(403).send('Unauthorized');
-  
-      post.content = content;
-      await post.save();
-  
-      res.redirect('/profile');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Server error');
-    }
-  });
-
-  app.post('/posts/:id/delete', isLoggedIn, async (req, res) => {
-    try {
-      const postId = req.params.id;
-      const post = await Post.findById(postId);
-  
-      if (!post) return res.status(404).send("Post not found");
-      if (String(post.author) !== String(req.userId))
-        return res.status(403).send("Unauthorized");
-  
-      await Post.findByIdAndDelete(postId);
-  
-      await User.findByIdAndUpdate(req.userId, {
-        $pull: { posts: postId }
-      });
-  
-      res.redirect('/profile');
-    } catch (err) {
-      console.log(err);
-      res.status(500).send("Server error");
-    }
-  });
-
+// --- Upload profile pic ---
 app.get('/profile/upload', isLoggedIn, async (req, res) => {
   res.render('profileUpload');
 });
 
-// Fix field name: should be 'profile' not 'image'
-const fs = require('fs');
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'public', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-app.post(
-  "/profile/upload",
-  isLoggedIn,
-  upload.single("profile"),
-  async (req, res) => {
-
+app.post('/profile/upload', isLoggedIn, upload.single("profile"), async (req, res) => {
+  try {
     if (!req.file) return res.status(400).send("No file uploaded");
 
-    // Save file into user DB
+    // Save relative public path (served from /uploads)
     await User.findByIdAndUpdate(req.userId, {
       profile: "/uploads/" + req.file.filename
     });
 
-    res.redirect("/profile");
+    res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Upload failed");
   }
-);
+});
+
+app.get("/search", async (req, res) => {
+  const user = req.user;
+  const query = req.query.q || "";
+
+  const results = await User.find(
+    query ? { name: new RegExp(query, "i") } : {}
+  );
+
+  res.render("search", { results, query, user });
+});
+
+
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

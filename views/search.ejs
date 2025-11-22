@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Search</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-zinc-900 text-white min-h-screen">
+  <%- include('partials/header', { user: user }) %>
+
+  <div class="max-w-4xl mx-auto p-6">
+    <form action="/search" method="get" class="mb-4">
+      <input type="text" name="q" placeholder="Search users by name" value="<%= query || '' %>" class="px-3 py-2 rounded bg-zinc-800 w-2/3" />
+      <button class="bg-blue-600 px-3 py-1 rounded">Search</button>
+    </form>
+
+    <% if (!results || results.length === 0) { %>
+      <div class="text-zinc-400">No users found.</div>
+    <% } else { %>
+      <div class="grid grid-cols-1 gap-3">
+        <% results.forEach(u => { %>
+          <a href="/user/<%= u._id %>" class="flex items-center gap-3 bg-zinc-800 p-3 rounded">
+            <img src="<%= u.profile || '/profile/defaultProfile.png' %>" class="w-12 h-12 rounded-full object-cover" />
+            <div class="font-semibold"><%= u.name %></div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</body>
+</html>

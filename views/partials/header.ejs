@@ -1,0 +1,15 @@
+<nav class="flex items-center justify-between p-4 bg-zinc-800 text-white">
+    <div class="flex items-center gap-4">
+      <a href="/feed" class="font-semibold">Home</a>
+      <a href="/profile" class="opacity-90">My Profile</a>
+      <a href="/search" class="opacity-90">Search</a>
+    </div>
+  
+    <div class="flex items-center gap-3">
+      <span class="text-sm"><%= user ? user.name : '' %></span>
+      <form action="/logout" method="get">
+        <button class="bg-red-600 px-3 py-1 rounded text-white">Logout</button>
+      </form>
+    </div>
+  </nav>
+  

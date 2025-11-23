@@ -1,35 +1,40 @@
-<nav class="flex items-center justify-between p-4 bg-zinc-800 text-white <%= navClass || '' %>">
-    <div class="flex items-center gap-4">
-      <a href="/feed" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Home">
-        <!-- Home Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+<nav class="w-full bg-zinc-800 text-white shadow-md sticky top-0 z-50">
+  <div class="max-w-4xl mx-auto px-3 h-14 flex items-center justify-between">
+    <!-- LEFT -->
+    <div class="flex items-center gap-3">
+      <a href="/feed" class="p-2 rounded transition hover:bg-zinc-700 inline-flex items-center">
+        <!-- Home icon (compact) -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-7 9 7M4 10v10a1 1 0 001 1h5a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h5a1 1 0 001-1V10"/>
         </svg>
       </a>
-      <a href="/search" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Search">
-        <!-- Search Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+
+      <a href="/search" class="p-2 rounded transition hover:bg-zinc-700 inline-flex items-center">
+        <!-- Search icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="11" cy="11" r="7" stroke-width="2" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round" />
         </svg>
       </a>
     </div>
-  
+
+    <!-- CENTER: Brand (optional small) -->
+    <div class="hidden sm:flex items-center justify-center">
+      <a href="/" class="text-sm font-semibold tracking-wide">MicroSocial</a>
+    </div>
+
+    <!-- RIGHT -->
     <div class="flex items-center gap-3">
-      <a href="/profile" class="flex items-center justify-center">
-        <img 
-          src="<%= user && user.profile ? user.profile : '/profile/defaultProfile.png' %>" 
-          alt="Profile" 
-          class="w-9 h-9 rounded-full object-cover border-2 border-blue-400 hover:border-blue-500 transition"
-          style="background:rgba(60,60,65,0.22);" 
-          onerror="this.onerror=null;this.src='/profile/defaultProfile.png';"
-        />
+      <a href="/profile" class="inline-flex items-center">
+        <img src="<%= user?.profile || '/profile/defaultProfile.png' %>" alt="profile"
+             class="w-9 h-9 rounded-full object-cover border-2 border-blue-500 hover:border-blue-400 transition" />
       </a>
-      <form action="/logout" method="get">
-        <button class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white">
+
+      <form action="/logout" method="get" class="inline">
+        <button class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-sm font-semibold">
           Logout
         </button>
       </form>
     </div>
-  </nav>
-  
+  </div>
+</nav>

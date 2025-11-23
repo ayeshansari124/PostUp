@@ -1,0 +1,64 @@
+/* GLOBAL PAGE RESET */
+body {
+    background: #18181b;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+  }
+  
+  /* SVG icons */
+  .header-icon {
+    width: 1.75rem;     /* w-7 */
+    height: 1.75rem;    /* h-7 */
+  }
+  
+  @media (min-width: 640px) {
+    .header-icon {
+      width: 2rem;      /* w-8 */
+      height: 2rem;     /* h-8 */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-icon {
+      width: 2.25rem;   /* w-9 */
+      height: 2.25rem; 
+    }
+  }
+  
+  /* Profile image */
+  .header-profile {
+    width: 2.5rem;      /* w-10 */
+    height: 2.5rem;     /* h-10 */
+  }
+  
+  @media (min-width: 640px) {
+    .header-profile {
+      width: 2.75rem;   /* w-11 */
+      height: 2.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-profile {
+      width: 3rem;      /* w-12 */
+      height: 3rem;
+    }
+  }
+  
+  /* Logout button text */
+  .header-btn-text {
+    font-size: 0.9rem;
+  }
+  @media (min-width: 640px) {
+    .header-btn-text {
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .header-btn-text {
+      font-size: 1.125rem;
+    }
+  }
+  

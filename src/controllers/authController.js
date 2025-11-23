@@ -24,10 +24,10 @@ const login = async (req, res) => {
   if (!email || !password) return res.status(400).send('Missing fields');
 
   const user = await User.findOne({ email: email.toLowerCase() });
-  if (!user) return res.status(401).send('Invalid email or password');
+  if (!user) return res.redirect('/');
 
   const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).send('Invalid email or password');
+  if (!ok) return res.redirect('/');
 
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '7d' });
   res.cookie(COOKIE_NAME, token, { httpOnly: true, sameSite: 'lax' });

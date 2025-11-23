@@ -1,73 +1,55 @@
-<div class="card w-full">
+<div class="w-full flex items-start gap-3 py-3">
+  <!-- profile -->
+  <img src="<%= post.author.profile || '/profile/defaultProfile.png' %>"
+       alt="author" class="w-12 h-12 rounded-full object-cover border border-zinc-700"/>
 
-    <!-- AUTHOR -->
-    <div class="flex items-start gap-4">
-      
-      <img 
-        src="<%= post.author.profile || '/profile/defaultProfile.png' %>"
-        class="w-14 h-14 rounded-full object-cover border border-zinc-700"
-      />
-  
-      <div class="flex-1">
-  
-        <!-- Name + Date -->
-        <div class="flex items-center justify-between">
-          <a href="/user/<%= post.author._id %>" 
-             class="font-semibold text-lg hover:text-blue-400 transition">
-            <%= post.author.name %>
-          </a>
-  
-          <span class="text-xs text-zinc-400">
-            <%= new Date(post.createdAt).toLocaleString() %>
-          </span>
-        </div>
-  
-        <!-- CONTENT -->
-        <div class="post-text mt-3 break-words leading-relaxed">
-          <%= post.content %>
-        </div>
-  
-        <!-- ACTIONS -->
-        <div class="flex items-center gap-4 mt-4">
-  
-          <!-- LIKE -->
-          <form action="/posts/<%= post._id %>/like" method="POST">
-            <% const liked = (post.likes || []).map(l => String(l)).includes(String(user._id)); %>
-            <button class="flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" 
-                class="w-6 h-6 <%= liked ? 'text-pink-400' : 'text-blue-400' %>"
-                fill="<%= liked ? 'currentColor' : 'none' %>" 
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                 d="M12 21s-6.7-4.8-9.4-9C1 10 1.5 6.5 4.2 5A5.4 5.4 0 0 1 12 6a5.4 5.4 0 0 1 7.8-1c2.7 1.6 3.2 5 1.6 7C18.7 16.1 12 21 12 21z"/>
-              </svg>
-              <span><%= post.likes.length %></span>
-            </button>
-          </form>
-  
-          <% if (String(post.author._id) === String(user._id)) { %>
-  
-            <!-- EDIT -->
-            <a href="/posts/<%= post._id %>/edit" class="text-yellow-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M16.862 4.487l1.651-1.652a2.1 2.1 0 113 3L11.25 16.1l-4 1 1-4L16.862 4.487z"/>
-              </svg>
-            </a>
-  
-            <!-- DELETE -->
-            <form action="/posts/<%= post._id %>/delete" method="POST">
-              <button class="text-pink-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
-                 viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M6 7h12m-1 0l-.867 12.1A2 2 0 0114.1 21H9.9a2 2 0 01-2-1.9L7 7m5-4h-1a2 2 0 00-2 2v2h6V5a2 2 0 00-2-2z"/>
-                </svg>
-              </button>
-            </form> 
-          <% } %> 
-        </div> 
-      </div>
+  <div class="flex-1">
+    <div class="flex items-center justify-between">
+      <a href="/user/<%= post.author._id %>" class="font-semibold text-sm sm:text-base hover:text-blue-400 transition">
+        <%= post.author.name %>
+      </a>
+
+      <span class="text-xs text-zinc-400 whitespace-nowrap ml-2">
+        <%= new Date(post.createdAt).toLocaleString() %>
+      </span>
+    </div>
+
+    <div class="mt-2 text-sm sm:text-base leading-relaxed break-words">
+      <%= post.content %>
+    </div>
+
+    <div class="flex items-center gap-6 mt-3 text-zinc-300">
+      <form action="/posts/<%= post._id %>/like" method="POST" class="flex items-center">
+        <% const liked = (post.likes || []).map(l => String(l)).includes(String(user._id)); %>
+        <button class="flex items-center gap-1 p-1">
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="w-5 h-5 sm:w-6 sm:h-6 <%= liked ? 'text-pink-400' : 'text-blue-400' %>"
+               fill="<%= liked ? 'currentColor' : 'none' %>"
+               viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 21s-6.7-4.8-9.4-9C1 10 1.5 6.5 4.2 5A5.4 5.4 0 0 1 12 6a5.4 5.4 0 0 1 7.8-1c2.7 1.6 3.2 5 1.6 7C18.7 16.1 12 21 12 21z"/>
+          </svg>
+          <span class="text-sm"><%= post.likes.length %></span>
+        </button>
+      </form>
+
+      <% if (String(post.author._id) === String(user._id)) { %>
+        <a href="/posts/<%= post._id %>/edit" class="text-yellow-400 p-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16.862 4.487l1.651-1.652a2.1 2.1 0 113 3L11.25 16.1l-4 1 1-4L16.862 4.487z"/>
+          </svg>
+        </a>
+
+        <form action="/posts/<%= post._id %>/delete" method="POST" class="p-1 inline">
+          <button class="text-pink-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 7h12m-1 0l-.867 12.1A2 2 0 0114.1 21H9.9a2 2 0 01-2-1.9L7 7m5-4h-1a2 2 0 00-2 2v2h6V5a2 2 0 00-2-2z"/>
+            </svg>
+          </button>
+        </form>
+      <% } %>
     </div>
   </div>
-  
+</div>

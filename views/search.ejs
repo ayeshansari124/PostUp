@@ -1,97 +1,38 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8">
   <title>Search — MicroSocial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/style/global.css">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-  <style>
-    body, .bg-main {
-      background: #18181b !important;
-    }
-
-    .card-glass {
-      background: rgba(39, 39, 42, 0.25);
-      border: 1.5px solid rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border-radius: 1rem;
-      transition: 0.2s ease;
-    }
-
-    .card-glass:hover {
-      background: rgba(39, 39, 44, 0.40);
-      border-color: rgba(255,255,255,0.16);
-      transform: translateY(-2px);
-    }
-
-    .search-btn {
-      background: #2563eb;
-      color: white;
-      padding: 0.65rem 1.2rem;
-      border-radius: 0.75rem;
-      font-weight: 600;
-    }
-
-    .search-btn:hover {
-      background: #1e4fd3;
-    }
-  </style>
 </head>
+<body class="text-white bg-zinc-900 min-h-screen">
 
-<body class="bg-main text-white min-h-screen">
+  <%- include("partials/header", { user }) %>
 
-  <!-- HEADER -->
-  <%- include('partials/header', { user, navClass: '' }) %>
+  <main class="w-full max-w-[700px] mx-auto px-4 py-8">
+    <h1 class="text-center font-extrabold text-3xl mb-8">Search Users</h1>
 
-  <!-- PAGE CONTENT -->
-  <div class="max-w-2xl mx-auto px-4 py-10">
-
-    <h1 class="text-3xl font-bold mb-6 text-center">Search Users</h1>
-
-    <!-- SEARCH BAR -->
     <form action="/search" method="get" class="flex gap-3 mb-10">
-      <input 
-        type="text" 
-        name="q" 
-        value="<%= query || '' %>" 
-        placeholder="Search users..."
-        class="flex-1 px-4 py-3 rounded-xl bg-zinc-900 border border-zinc-700 placeholder-zinc-400 focus:ring-2 focus:ring-blue-500 outline-none"
-      />
-      <button type="submit" class="search-btn">Search</button>
+      <input type="text" name="q" value="<%= query || '' %>" placeholder="Search users..."
+             class="flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500 text-lg placeholder-zinc-500"/>
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold px-5 py-3">Search</button>
     </form>
 
-    <!-- RESULTS -->
     <% if (!results || results.length === 0) { %>
-
-      <p class="text-zinc-400 text-center">No users found.</p>
-
+      <p class="text-center text-zinc-400 text-lg">No users found.</p>
     <% } else { %>
-
-      <div class="flex flex-col gap-4">
-
+      <div class="flex flex-col gap-6">
         <% results.forEach(u => { %>
-
-          <a 
-            href="/user/<%= u._id %>" 
-            class="card-glass p-4 flex items-center gap-4"
-          >
-            <img 
-              src="<%= u.profile || '/profile/defaultProfile.png' %>"
-              class="w-14 h-14 rounded-full object-cover border border-zinc-600"
-            />
-
-            <div class="text-lg font-semibold">
-              <%= u.name %>
-            </div>
+          <a href="/user/<%= u._id %>" class="flex items-center gap-4 bg-zinc-800/30 border border-white/6 rounded-xl p-4 hover:bg-zinc-800/50 transition">
+            <img src="<%= u.profile || '/profile/defaultProfile.png' %>" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border border-zinc-700" alt="user"/>
+            <div class="result-name font-semibold text-xl sm:text-2xl"><%= u.name %></div>
           </a>
-
         <% }) %>
-
       </div>
-
     <% } %>
-
-  </div>
+  </main>
 
 </body>
 </html>

@@ -3,115 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <title>MicroSocial — Connect Instantly</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/style/global.css">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-  <style>
-    body {
-      background: #0f0f12;
-      color: white;
-    }
-
-    .hero-bg {
-      background-image: url('https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1350&q=80');
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.35);
-    }
-
-    .modal-bg {
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(6px);
-    }
-
-    .modal {
-      animation: pop 0.25s ease;
-    }
-
-    @keyframes pop {
-      from { transform: scale(0.85); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-  </style>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 </head>
+<body class="relative min-h-screen bg-black text-white">
 
-<body class="relative min-h-screen">
+  <!-- Background image as an <img> (no inline CSS) -->
+  <div class="absolute inset-0 -z-10">
+    <img src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1350&q=80"
+         alt="background" class="w-full h-full object-cover brightness-50"/>
+  </div>
 
-  <!-- Background -->
-  <div class="absolute inset-0 hero-bg -z-10"></div>
-
-  <!-- Navbar -->
-  <nav class="flex items-center justify-between p-6 relative z-10">
-    <h1 class="text-4xl font-extrabold tracking-wide flex items-center gap-2">
+  <!-- NAVBAR (simple top row) -->
+  <nav class="flex items-center justify-between px-6 py-6 relative z-10 max-w-6xl mx-auto">
+    <h1 class="brand-text text-2xl sm:text-3xl font-extrabold tracking-wide flex items-center gap-2">
       <span>💬</span> MicroSocial
     </h1>
 
-    <div class="flex gap-4">
-      <button onclick="openModal('loginModal')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">
+    <div class="flex gap-3">
+      <button onclick="openModal('loginModal')" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition text-sm">
         Login
       </button>
-      <button onclick="openModal('registerModal')" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-semibold">
+
+      <button onclick="openModal('registerModal')" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg font-semibold transition text-sm">
         Sign Up
       </button>
     </div>
   </nav>
 
   <!-- HERO -->
-  <div class="h-[80vh] flex flex-col items-center justify-center text-center px-6 relative z-10">
-    <h2 class="text-6xl font-black mb-4 drop-shadow-xl">Welcome to MicroSocial</h2>
-    <p class="max-w-xl text-lg opacity-90">A fast, clean and simple social platform to share moments and connect.</p>
+  <section class="h-[80vh] flex flex-col items-center justify-center text-center px-6 relative z-10">
+    <h2 class="hero-title text-4xl sm:text-6xl font-black mb-5">
+      Welcome to MicroSocial
+    </h2>
 
-    <button onclick="openModal('registerModal')"
-      class="mt-8 px-6 py-3 text-xl bg-blue-600 hover:bg-blue-700 rounded-xl font-bold">
+    <p class="hero-subtext max-w-xl text-lg opacity-90">
+      A fast, clean, and simple platform to share moments and connect instantly.
+    </p>
+
+    <button onclick="openModal('registerModal')" class="mt-8 px-6 py-3 text-lg sm:text-xl bg-blue-600 hover:bg-blue-700 rounded-xl font-bold transition">
       Get Started
     </button>
-  </div>
+  </section>
 
-  <!-- LOGIN MODAL -->
-  <div id="loginModal" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center p-4">
-    <div class="modal bg-zinc-900 p-8 rounded-xl max-w-md w-full shadow-2xl">
+  <!-- MODALS -->
+  <div id="loginModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-zinc-900 p-8 rounded-xl max-w-md w-full shadow-2xl">
       <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
-
       <form action="/login" method="POST" class="flex flex-col gap-4">
-        <input type="email" name="email" placeholder="Email" required
-          class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
-        <input type="password" name="password" placeholder="Password" required
-          class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
-
+        <input type="email" name="email" required placeholder="Email" class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
+        <input type="password" name="password" required placeholder="Password" class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-blue-500 outline-none">
         <button class="py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-bold">Login</button>
       </form>
-
-      <button class="mt-4 w-full text-zinc-400 hover:text-white text-sm" onclick="closeModal('loginModal')">Cancel</button>
+      <button onclick="closeModal('loginModal')" class="mt-4 w-full text-zinc-400 hover:text-white text-sm">Cancel</button>
     </div>
   </div>
 
-  <!-- REGISTER MODAL -->
-  <div id="registerModal" class="hidden fixed inset-0 modal-bg z-50 flex items-center justify-center p-4">
-    <div class="modal bg-zinc-900 p-8 rounded-xl max-w-md w-full shadow-2xl">
+  <div id="registerModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-zinc-900 p-8 rounded-xl max-w-md w-full shadow-2xl">
       <h2 class="text-2xl font-bold mb-6 text-center">Create Account</h2>
-
       <form action="/register" method="POST" class="flex flex-col gap-4">
-        <input type="text" name="name" placeholder="Name" required
-          class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
-        <input type="email" name="email" placeholder="Email" required
-          class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
-        <input type="password" name="password" placeholder="Password" required
-          class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
-
+        <input type="text" name="name" required placeholder="Name" class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+        <input type="email" name="email" required placeholder="Email" class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
+        <input type="password" name="password" required placeholder="Password" class="p-3 bg-zinc-800 rounded-md focus:ring-2 focus:ring-green-500 outline-none">
         <button class="py-3 bg-green-600 hover:bg-green-700 rounded-lg font-bold">Sign Up</button>
       </form>
-
-      <button class="mt-4 w-full text-zinc-400 hover:text-white text-sm" onclick="closeModal('registerModal')">Cancel</button>
+      <button onclick="closeModal('registerModal')" class="mt-4 w-full text-zinc-400 hover:text-white text-sm">Cancel</button>
     </div>
   </div>
 
   <script>
-    function openModal(id) {
-      document.getElementById(id).classList.remove("hidden");
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.add("hidden");
-    }
+    function openModal(id) { document.getElementById(id).classList.remove("hidden"); }
+    function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
   </script>
 
 </body>

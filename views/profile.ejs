@@ -2,7 +2,16 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Profile</title>
+  <% 
+    // Profile title logic must match usage pattern in file!
+    // Needs to use either profileUser or user (displayed is defined below navbar in original)
+    // So we define it here _before_ using it for title:
+    const displayed = typeof profileUser !== "undefined" && profileUser ? profileUser : user;
+    const profileTitle = (displayed && displayed.name ? displayed.name + ' - ' : '') + 'Profile';
+  %>
+  <title><%= profileTitle %></title>
+  <!-- Favicon: Inline SVG as in index.ejs -->
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle fill="deepskyblue" cx="16" cy="16" r="16"/><text x="16" y="23" text-anchor="middle" font-size="17" fill="white" font-family="Arial,sans-serif">𝔽</text></svg>'>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
     body, .bg-main {
@@ -77,8 +86,9 @@
 <body class="relative min-h-screen bg-main text-white">
   <%- include('partials/header', { user: user }) %>
 
-  <% const displayed = profileUser || user; %>
-  <% const isOwnProfile = !profileUser || String(profileUser._id) === String(user._id); %>
+  <% 
+    const isOwnProfile = !profileUser || String(profileUser._id) === String(user._id); 
+  %>
 
   <div class="max-w-3xl mx-auto px-2 sm:px-4 py-4 md:py-6 mt-6 flex flex-col gap-6">
     <!-- Profile Info Top Section: mobile and desktop -->

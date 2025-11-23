@@ -2,7 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Search</title>
+  <title>MicroSocial &mdash; Search Users</title>
+  <!-- Favicon: chat bubble SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%233b82f6'/%3E%3Cellipse cx='16' cy='19' rx='9' ry='6' fill='%23fff'/%3E%3Cellipse cx='16' cy='15.5' rx='7.5' ry='5' fill='%23fff' opacity='0.75'/%3E%3Ccircle cx='11.5' cy='18' r='1.3' fill='%233b82f6'/%3E%3Ccircle cx='16' cy='18' r='1.3' fill='%233b82f6'/%3E%3Ccircle cx='20.5' cy='18' r='1.3' fill='%233b82f6'/%3E%3C/svg%3E">
 
   <!-- Tailwind -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -59,6 +61,20 @@
   <%- include('partials/header', { user: user }) %>
 
   <div class="max-w-3xl mx-auto p-4 sm:p-6">
+
+    <h1 class="text-3xl font-black mb-8 flex items-center gap-3">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="inline w-8 h-8" aria-hidden="true">
+          <circle cx="16" cy="16" r="14" fill="#3b82f6"/>
+          <ellipse cx="16" cy="19" rx="9" ry="6" fill="#fff"/>
+          <ellipse cx="16" cy="15.5" rx="7.5" ry="5" fill="#fff" opacity="0.75"/>
+          <circle cx="11.5" cy="18" r="1.3" fill="#3b82f6"/>
+          <circle cx="16" cy="18" r="1.3" fill="#3b82f6"/>
+          <circle cx="20.5" cy="18" r="1.3" fill="#3b82f6"/>
+        </svg>
+      </span>
+      <span class="text-white">User Search</span>
+    </h1>
 
     <!-- SEARCH BAR -->
     <form action="/search" method="get" class="mb-8 w-full">

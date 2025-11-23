@@ -2,223 +2,135 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <% 
-    // Profile title logic must match usage pattern in file!
-    // Needs to use either profileUser or user (displayed is defined below navbar in original)
-    // So we define it here _before_ using it for title:
-    const displayed = typeof profileUser !== "undefined" && profileUser ? profileUser : user;
-    const profileTitle = (displayed && displayed.name ? displayed.name + ' - ' : '') + 'Profile';
-  %>
-  <title><%= profileTitle %></title>
-  <!-- Favicon: Inline SVG as in index.ejs -->
-  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle fill="deepskyblue" cx="16" cy="16" r="16"/><text x="16" y="23" text-anchor="middle" font-size="17" fill="white" font-family="Arial,sans-serif">𝔽</text></svg>'>
+  <title><%= (profileUser || user).name %> - Profile</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
   <style>
-    body, .bg-main {
-      background: #18181b !important;
-    }
+    body { background: #18181b; }
     .card-glass {
-      background: rgba(39, 39, 42, 0.26);
+      background: rgba(39,39,42,0.26);
       border: 1.5px solid rgba(244,244,245,0.11);
-      box-shadow: 0 4px 32px 0 rgba(24,24,27,0.13);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #fff;
-      transition: background 0.2s, box-shadow 0.2s;
-    }
-    .card-glass:hover {
-      background: rgba(39, 39, 44, 0.39);
-      border-color: rgba(244,244,245,0.18);
-      box-shadow: 0 8px 36px 0 rgba(39,39,42,0.17);
-    }
-    .card-glass textarea,
-    .card-glass input {
-      background: transparent;
-      color: #fff;
-    }
-    .card-glass textarea::placeholder,
-    .card-glass input::placeholder {
-      color: #a1a1aa;
-    }
-    button,
-    label[for],
-    .custom-btn,
-    input[type="submit"] {
-      cursor: pointer !important;
-      transition: transform 0.18s, background 0.18s, color 0.18s, border-color 0.18s;
-    }
-    button:hover, button:focus,
-    input[type="submit"]:hover, input[type="submit"]:focus,
-    label[for]:hover, label[for]:focus,
-    .custom-btn:hover, .custom-btn:focus {
-      transform: scale(1.06);
-      filter: brightness(1.1);
-      outline: none;
-      box-shadow: 0 4px 18px 0 rgba(0,0,0,0.10);
-    }
-    a {
-      cursor: pointer;
-      text-decoration: none;
-      transition: border-color 0.17s, color 0.18s, text-decoration-color 0.17s, box-shadow 0.16s;
-      border-bottom: 2px solid transparent;
-    }
-    a:hover, a:focus-visible {
-      color: #60a5fa !important;
-      border-bottom: 2px solid #60a5fa;
-      text-decoration: underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 3px;
-      outline: none;
-      box-shadow: 0 2px 12px 0 rgba(39,39,42,0.17);
-    }
-    .icon-click:hover svg, .icon-click:focus svg,
-    button:hover svg, button:focus svg,
-    a:hover svg, a:focus svg {
-      filter: brightness(1.33) drop-shadow(0 1px 3px #3b82f619);
-      transform: scale(1.18);
-    }
-    .icon-click, .icon-click * {
-      cursor: pointer;
     }
   </style>
 </head>
 
-<body class="relative min-h-screen bg-main text-white">
-  <%- include('partials/header', { user: user }) %>
+<body class="min-h-screen text-white">
+  
+  <%- include("partials/header", { user, navClass: "" }) %>
 
   <% 
-    const isOwnProfile = !profileUser || String(profileUser._id) === String(user._id); 
+    // The user whose profile is being displayed
+    const displayedUser = profileUser || user;
+    const isOwnProfile = !profileUser || String(profileUser._id) === String(user._id);
   %>
 
-  <div class="max-w-3xl mx-auto px-2 sm:px-4 py-4 md:py-6 mt-6 flex flex-col gap-6">
-    <!-- Profile Info Top Section: mobile and desktop -->
-    <div class="card-glass p-5 sm:p-8 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start sm:gap-8 text-center sm:text-left">
-      <img 
-        src="<%= displayed.profile || '/profile/defaultProfile.png' %>"
-        class="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full mb-4 sm:mb-0 object-cover border-4 border-white/20"
-      />
-      <div class="flex flex-col items-center sm:items-start flex-1">
-        <div class="text-xl sm:text-2xl font-bold mb-1 break-words w-full"><%= displayed.name %></div>
-        <div class="text-zinc-400 text-sm sm:text-base mb-4 w-full">
-          Joined <%= new Date(displayed.createdAt).toLocaleDateString() %>
-        </div>
+  <div class="max-w-3xl mx-auto py-6 px-4 flex flex-col gap-6">
+
+    <!-- PROFILE CARD -->
+    <div class="card-glass p-6 rounded-2xl flex flex-col sm:flex-row gap-6 items-center">
+
+      <!-- IMAGE -->
+      <div class="relative">
+        <img id="profileImg"
+          src="<%= displayedUser.profile %>"
+          class="w-32 h-32 rounded-full object-cover border-4 border-white/20"
+        />
+
+        <img id="previewImg"
+          class="hidden absolute inset-0 w-32 h-32 rounded-full object-cover border-4 border-green-500 shadow-xl"
+        />
+      </div>
+
+      <!-- INFO -->
+      <div class="flex-1">
+        <h2 class="text-2xl font-bold"><%= displayedUser.name %></h2>
+        <p class="text-zinc-400 mt-1">
+          Joined <%= new Date(displayedUser.createdAt).toLocaleDateString() %>
+        </p>
+
         <% if (isOwnProfile) { %>
-          <form action="/profile/upload" method="post" enctype="multipart/form-data" class="flex flex-col items-center sm:items-start">
-            <input type="file" name="profile" accept="image/*" class="hidden" id="profileUploadInput" onchange="this.form.submit()" />
-            <label for="profileUploadInput"
-              class="cursor-pointer bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl font-semibold inline-block transition transform hover:scale-105"
-              tabindex="0"
-              style="transition: transform 0.18s, background 0.18s;"
-            >Upload Photo
+        <!-- UPLOAD FORM -->
+        <form id="uploadForm" action="/profile/upload" method="POST" enctype="multipart/form-data" class="mt-4 flex flex-col gap-3">
+          
+          <input id="uploadInput" type="file" name="profile" accept="image/*" class="hidden">
+
+            <label for="uploadInput"
+              class="bg-blue-600 px-4 py-2 rounded-lg cursor-pointer hover:bg-blue-700 inline-block w-auto"
+              style="display: inline-block; width: auto; min-width: 0;">
+              Choose Photo
             </label>
-          </form>
+            
+
+          <div id="previewActions" class="hidden flex gap-3">
+            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg" type="submit">Save</button>
+            <button type="button" onclick="cancelPreview()" class="bg-zinc-600 hover:bg-zinc-700 px-4 py-2 rounded-lg">Cancel</button>
+          </div>
+
+        </form>
         <% } %>
+
       </div>
     </div>
 
-    <!-- CREATE POST (Feed style) -->
+    <!-- CREATE POST (OWN PROFILE ONLY) -->
     <% if (isOwnProfile) { %>
-      <form action="/post" method="POST" class="flex flex-col sm:flex-row gap-2 w-full mb-6 sm:mb-8 items-stretch sm:items-center">
-        <textarea
-          name="content"
-          placeholder="Post anything..."
-          class="outline-none flex-1 px-3 py-3 text-white rounded-lg text-base placeholder-zinc-400 border-2 border-zinc-700 bg-transparent focus:border-blue-400 focus:ring-2 focus:ring-blue-300 resize-none"
-          rows="2"
-          style="min-width: 0; box-shadow:none; border-width:2px;"
-        ></textarea>
-        <button
-          type="submit"
-          class="flex items-center justify-center gap-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold transition transform hover:scale-105 self-end sm:self-auto"
-          style="box-shadow:none;"
-        >
-          Post
-        </button>
-      </form>
+    <form action="/post" method="POST" class="flex flex-col sm:flex-row gap-3">
+      <textarea name="content" placeholder="What's on your mind?"
+        class="flex-1 p-3 bg-transparent border border-zinc-700 rounded-lg resize-none"></textarea>
+
+      <button class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg">
+        Post
+      </button>
+    </form>
     <% } %>
 
-    <h2 class="text-xl sm:text-2xl font-semibold mb-4 sm:mb-5">Posts</h2>
+    <!-- POSTS -->
+<h3 class="text-xl font-semibold mt-4 mb-4">
+  <%= isOwnProfile ? "Your Posts" : displayedUser.name + "'s Posts" %>
+</h3>
 
-    <% 
-      // Only show posts that are authored by the profile user (aka displayed user)
-      const posts = (displayed.posts || []).filter(function(post) { 
-        return String(post.author) === String(displayed._id);
-      });
-    %>
-
-    <% if (posts.length === 0) { %>
-      <div class="text-zinc-400">No posts yet.</div>
-    <% } %>
-
-    <!-- Responsive posts grid - always single column on mobile, two on sm, three on xl -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-      <% posts.forEach(function(post) { %>
-        <div class="card-glass p-3 sm:p-4 rounded-2xl flex flex-col">
-          <% 
-            // Only allow editing and deleting if viewing your own profile and you're the author
-            const canEditOrDelete = isOwnProfile && String(post.author) === String(user._id);
-          %>
-          <% if (editPostId && editPostId === String(post._id) && canEditOrDelete) { %>
-            <form action="/posts/<%= post._id %>/edit" method="post" class="flex flex-col gap-3">
-              <textarea
-                name="content"
-                class="w-full p-2 sm:p-3 rounded-xl bg-zinc-800 text-white border border-white/10 text-base"
-                rows="4"
-              ><%= post.content %></textarea>
-              <div class="flex gap-2 flex-wrap">
-                <button class="bg-blue-600 px-4 py-2 rounded-xl transition transform hover:scale-105 hover:bg-blue-700 font-semibold">Save</button>
-                <a href="/profile" class="bg-zinc-600 px-4 py-2 rounded-xl transition transform hover:scale-105 hover:bg-zinc-700 font-semibold inline-flex items-center justify-center">Cancel</a>
-              </div>
-            </form>
-          <% } else { %>
-            <div class="text-white/95 text-base sm:text-lg mb-2 break-words">
-              <%= post.content %>
-            </div>
-            <!-- CREATED TIME -->
-            <div class="text-xs text-zinc-400 mb-3 sm:mb-4">
-              <%= new Date(post.createdAt).toLocaleString() %>
-            </div>
-            <div class="flex items-center gap-3 mt-auto flex-wrap">
-              <form action="/posts/<%= post._id %>/like" method="post" class="icon-click">
-                <% const liked = (post.likes || []).map(l => String(l)).includes(String(user._id)); %>
-                <button class="p-1 transition transform hover:scale-125"
-                  title="<%= liked ? 'Unlike' : 'Like' %>">
-                  <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-6 h-6 <%= liked ? 'text-pink-400' : 'text-blue-400' %> transition-colors"
-                    fill="<%= liked ? 'currentColor' : 'none' %>"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 21s-6.716-4.867-9.447-9.086C.976 9.818 1.508 6.39 4.21 4.821A5.38 5.38 0 0 1 12 6.04a5.38 5.38 0 0 1 7.79-1.219c2.701 1.569 3.234 4.997 1.657 7.093C18.716 16.133 12 21 12 21Z"/>
-                  </svg>
-                </button>
-              </form>
-              <span class="text-xs text-white ml-1"><%= post.likes.length %></span>
-              <% if (canEditOrDelete) { %>
-                <a href="/posts/<%= post._id %>/edit"
-                  class="ml-auto p-1 icon-click transition transform hover:scale-125 border-b-2 border-transparent hover:border-yellow-400"
-                  title="Edit Post">
-                  <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5 text-yellow-400"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M16.862 4.487l1.651-1.652a2.1 2.1 0 113 3L11.25 16.1l-4 1 1-4L16.862 4.487z"/>
-                  </svg>
-                </a>
-                <form action="/posts/<%= post._id %>/delete" method="post" class="inline icon-click">
-                  <button class="p-1 transition transform hover:scale-125" title="Delete Post">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                      class="w-5 h-5 text-pink-400"
-                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M6 7h12m-1 0l-.867 12.142A2 2 0 0114.138 21H9.862a2 2 0 01-1.995-1.858L7 7m5-4h-1a2 2 0 00-2 2v2h6V5a2 2 0 00-2-2z"/>
-                    </svg>
-                  </button>
-                </form>
-              <% } %>
-            </div>
-          <% } %>
-        </div>
-      <% }); %>
-    </div>
+<% if (!displayedUser.posts || displayedUser.posts.length === 0) { %>
+  <div class="text-zinc-400 text-center mb-10">No posts yet.</div>
+<% } else { %>
+  <div class="flex flex-wrap gap-8 mb-6">
+    <% displayedUser.posts.forEach(function(post) { %>
+      <div class="flex-1 min-w-[320px] max-w-md"
+           style="padding:1.15rem">
+        <%- include('partials/postCard', { post: post, user: user, noBorder: true }) %>
+      </div>
+    <% }) %>
   </div>
+<% } %>
+
+  </div>
+
+  <script>
+    const uploadInput = document.getElementById("uploadInput");
+    const previewImg = document.getElementById("previewImg");
+    const profileImg = document.getElementById("profileImg");
+    const previewActions = document.getElementById("previewActions");
+
+    if (uploadInput) {
+      uploadInput.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+
+        previewImg.src = url;
+        previewImg.classList.remove("hidden");
+
+        previewActions.classList.remove("hidden");
+      });
+    }
+
+    function cancelPreview() {
+      previewImg.classList.add("hidden");
+      previewActions.classList.add("hidden");
+      uploadInput.value = "";
+    }
+  </script>
+
 </body>
 </html>

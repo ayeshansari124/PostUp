@@ -1,34 +1,35 @@
-<nav class="flex items-center justify-between p-4 bg-zinc-800 text-white">
-  <div class="flex items-center gap-4">
-    <a href="/feed" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Home">
-      <!-- Home Icon (heroicons outline home) -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-7 9 7M4 10v10a1 1 0 001 1h5a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h5a1 1 0 001-1V10"/>
-      </svg>
-    </a>
-    <a href="/search" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Search">
-      <!-- Search Icon (heroicons outline search) -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </a>
-  </div>
-
-  <div class="flex items-center gap-3">
-    <a href="/profile" class="flex items-center justify-center">
-      <img 
-        src="<%= user && user.profile ? user.profile : '/profile/defaultProfile.png' %>" 
-        alt="Profile" 
-        class="w-9 h-9 rounded-full object-cover border-2 border-blue-400 hover:border-blue-500 transition"
-        style="background:rgba(60,60,65,0.22);" 
-        onerror="this.onerror=null;this.src='/profile/defaultProfile.png';"
-      />
-    </a>
-    <form action="/logout" method="get">
-      <button class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white">
-        Logout
-      </button>
-    </form>
-  </div>
-</nav>
+<nav class="flex items-center justify-between p-4 bg-zinc-800 text-white <%= navClass || '' %>">
+    <div class="flex items-center gap-4">
+      <a href="/feed" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Home">
+        <!-- Home Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l9-7 9 7M4 10v10a1 1 0 001 1h5a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h5a1 1 0 001-1V10"/>
+        </svg>
+      </a>
+      <a href="/search" class="flex items-center justify-center p-1 rounded hover:bg-zinc-700 transition" title="Search">
+        <!-- Search Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  
+    <div class="flex items-center gap-3">
+      <a href="/profile" class="flex items-center justify-center">
+        <img 
+          src="<%= user && user.profile ? user.profile : '/profile/defaultProfile.png' %>" 
+          alt="Profile" 
+          class="w-9 h-9 rounded-full object-cover border-2 border-blue-400 hover:border-blue-500 transition"
+          style="background:rgba(60,60,65,0.22);" 
+          onerror="this.onerror=null;this.src='/profile/defaultProfile.png';"
+        />
+      </a>
+      <form action="/logout" method="get">
+        <button class="bg-red-600 hover:bg-red-800 px-3 py-1 rounded text-white">
+          Logout
+        </button>
+      </form>
+    </div>
+  </nav>
+  

@@ -6,6 +6,4 @@ const postSchema = new mongoose.Schema({
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
-const Post = mongoose.model('Post', postSchema);
-
-module.exports = Post;
+module.exports = mongoose.model('Post', postSchema);

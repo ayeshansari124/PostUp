@@ -1,91 +1,396 @@
+<!-- ========================= PROFILE.EJS ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= (profileUser || user).name %> - Profile</title>
+
+  <title><%= (profileUser || user).name %> — Profile</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="/style/global.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="min-h-screen text-white bg-zinc-900">
 
+<body class="min-h-screen bg-black text-white overflow-x-hidden">
+
+  <!-- ================= BACKGROUND ================= -->
+  <div class="fixed inset-0 -z-50">
+
+    <div class="absolute inset-0 bg-gradient-to-br from-zinc-950 via-black to-zinc-900"></div>
+
+    <div class="absolute top-0 left-0 w-[450px] h-[450px] bg-blue-500/10 blur-[120px] rounded-full"></div>
+
+    <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-indigo-500/10 blur-[120px] rounded-full"></div>
+
+  </div>
+
+
+
+
+
+  <!-- HEADER -->
   <%- include("partials/header", { user }) %>
+
+
+
+
 
   <%
     const displayedUser = profileUser || user;
     const isOwnProfile = !profileUser || String(profileUser._id) === String(user._id);
   %>
 
-  <div class="max-w-3xl mx-auto py-6 px-4 flex flex-col gap-8">
-    <div class="bg-zinc-800/40 border border-white/10 p-6 rounded-2xl flex flex-col sm:flex-row gap-6 items-center">
-      <div class="relative">
-        <img id="profileImg" src="<%= displayedUser.profile %>" alt="profile" class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-white/20" />
-        <img id="previewImg" class="hidden absolute inset-0 w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-green-500 shadow-xl" />
-      </div>
 
-      <div class="flex-1">
-        <h2 class="profile-name text-2xl sm:text-3xl font-bold"><%= displayedUser.name %></h2>
-        <p class="profile-date text-zinc-400 mt-1">Joined <%= new Date(displayedUser.createdAt).toLocaleDateString() %></p>
 
-        <% if (isOwnProfile) { %>
-          <form id="uploadForm" action="/profile/upload" method="POST" enctype="multipart/form-data" class="mt-4 flex flex-col gap-3">
-            <input id="uploadInput" type="file" name="profile" accept="image/*" class="hidden">
-            <label for="uploadInput" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg cursor-pointer inline-block text-sm">Change Photo</label>
 
-            <div id="previewActions" class="hidden flex gap-3">
-              <button type="submit" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm">Save</button>
-              <button type="button" onclick="cancelPreview()" class="bg-zinc-600 hover:bg-zinc-700 px-4 py-2 rounded-lg text-sm">Cancel</button>
-            </div>
-          </form>
-        <% } %>
-      </div>
-    </div>
 
-    <% if (isOwnProfile) { %>
-      <form action="/post" method="POST" class="flex flex-col sm:flex-row gap-3">
-        <textarea name="content" placeholder="What's on your mind?" class="flex-1 p-4 bg-zinc-800 border border-zinc-700 rounded-xl resize-none text-white focus:ring-2 focus:ring-blue-500"></textarea>
-        <button class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl">Post</button>
-      </form>
-    <% } %>
+  <!-- ================= MAIN ================= -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 
-    <h3 class="text-xl sm:text-2xl font-semibold mt-2"><%= isOwnProfile ? "Your Posts" : displayedUser.name + "'s Posts" %></h3>
+    <!-- ================= PROFILE CARD ================= -->
+<section class="relative overflow-hidden rounded-[32px] sm:rounded-[36px] border border-zinc-800 bg-transparent backdrop-blur-xl shadow-2xl">
 
-    <% if (!displayedUser.posts || displayedUser.posts.length === 0) { %>
-      <div class="text-zinc-400 text-center py-10">No posts yet.</div>
-    <% } else { %>
-      <div class="flex flex-col gap-6 mt-2">
-        <% displayedUser.posts.forEach(post => { %>
-          <div class="bg-zinc-800/40 border border-white/8 p-5 rounded-2xl">
-            <%- include("partials/postCard", { post, user }) %>
-          </div>
-        <% }) %>
-      </div>
-    <% } %>
+  <!-- COVER -->
+  <div class="relative h-28 sm:h-40 md:h-52 lg:h-56 overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+
+    <!-- overlay -->
+    <div class="absolute inset-0 bg-black/20"></div>
+
+    <!-- blur effects -->
+    <div class="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+
+    <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-black/20 rounded-full blur-3xl"></div>
+
   </div>
 
+
+
+
+
+  <!-- CONTENT -->
+  <div class="relative px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8">
+
+    <!-- WRAPPER -->
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 -mt-14 sm:-mt-20">
+
+      <!-- LEFT SIDE -->
+      <div class="flex flex-col sm:flex-row sm:items-end gap-5 sm:gap-6">
+
+        <!-- ================= PROFILE IMAGE ================= -->
+        <div class="relative w-fit group mx-auto sm:mx-0">
+
+          <!-- glow -->
+          <div class="absolute inset-0 rounded-full bg-blue-500 blur-2xl opacity-40"></div>
+
+          <!-- profile -->
+          <img
+            id="profileImg"
+            src="<%= displayedUser.profile || '/profile/defaultProfile.png' %>"
+            alt="profile"
+            class="relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full object-cover border-[5px] sm:border-[6px] border-zinc-950 shadow-2xl"
+          />
+
+          <!-- preview -->
+          <img
+            id="previewImg"
+            class="hidden absolute inset-0 w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full object-cover border-[5px] sm:border-[6px] border-green-500 shadow-2xl"
+          />
+
+
+
+
+
+          <!-- EDIT BUTTON -->
+          <% if (isOwnProfile) { %>
+
+            <form
+              id="uploadForm"
+              action="/profile/upload"
+              method="POST"
+              enctype="multipart/form-data">
+
+              <!-- hidden input -->
+              <input
+                id="uploadInput"
+                type="file"
+                name="profile"
+                accept="image/*"
+                class="hidden"
+              >
+
+              <!-- plus button -->
+              <label
+                for="uploadInput"
+                class="absolute bottom-0 right-0 sm:bottom-2 sm:right-2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 border-[3px] sm:border-4 border-zinc-950 flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300 shadow-xl shadow-blue-500/30">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor">
+
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4v16m8-8H4"
+                  />
+
+                </svg>
+
+              </label>
+
+
+
+
+
+              <!-- preview actions -->
+              <div
+                id="previewActions"
+                class="hidden absolute -bottom-16 left-1/2 -translate-x-1/2 items-center gap-3 z-20">
+
+                <!-- save -->
+                <button
+                  type="submit"
+                  class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-green-600 hover:bg-green-700 flex items-center justify-center shadow-xl transition-all duration-300">
+
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+
+                  </svg>
+
+                </button>
+
+
+
+
+
+                <!-- cancel -->
+                <button
+                  type="button"
+                  onclick="cancelPreview()"
+                  class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-500 hover:bg-red-600 flex items-center justify-center shadow-xl transition-all duration-300">
+
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+
+                  </svg>
+
+                </button>
+
+              </div>
+
+            </form>
+
+          <% } %>
+
+        </div>
+
+
+
+
+
+        <!-- USER INFO -->
+        <div class="text-center sm:text-left">
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight break-words">
+            <%= displayedUser.name %>
+          </h1>
+
+          <p class="mt-2 sm:mt-3 text-zinc-400 text-sm sm:text-base lg:text-lg">
+            Joined
+            <span class="text-zinc-300 font-medium">
+              <%= new Date(displayedUser.createdAt).toLocaleDateString() %>
+            </span>
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+
+
+      <!-- STATS -->
+      <div class="flex items-center justify-center lg:justify-end gap-6 sm:gap-8">
+
+        <!-- posts -->
+        <div class="text-center min-w-[90px] sm:min-w-[100px]">
+
+          <div class="text-2xl sm:text-3xl font-black">
+            <%= displayedUser.posts?.length || 0 %>
+          </div>
+
+          <div class="text-zinc-500 text-sm sm:text-base mt-1">
+            Posts
+          </div>
+
+        </div>
+
+
+
+
+
+        <!-- likes -->
+        <div class="text-center min-w-[90px] sm:min-w-[100px]">
+
+          <div class="text-2xl sm:text-3xl font-black">
+            <%= displayedUser.posts?.reduce((acc, p) => acc + (p.likes?.length || 0), 0) || 0 %>
+          </div>
+
+          <div class="text-zinc-500 text-sm sm:text-base mt-1">
+            Likes
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+
+
+    <!-- ================= CREATE POST ================= -->
+    <% if (isOwnProfile) { %>
+      <div class="mt-8">
+        <%- include("partials/CreatePost") %>
+      </div>
+           
+    <% } %>
+
+
+
+
+
+    <!-- ================= POSTS HEADER ================= -->
+    <section class="mt-12 mb-8 flex items-center justify-between gap-4">
+
+      <div>
+
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight">
+          <%= isOwnProfile ? "Your Posts" : displayedUser.name + "'s Posts" %>
+        </h2>
+
+        <p class="text-zinc-500 mt-2">
+          <%= displayedUser.posts?.length || 0 %> total posts shared
+        </p>
+
+      </div>
+
+    </section>
+
+
+
+
+
+    <!-- ================= POSTS ================= -->
+    <% if (!displayedUser.posts || displayedUser.posts.length === 0) { %>
+
+      <div class="bg-zinc-950 border border-zinc-800 rounded-[32px] py-20 text-center">
+
+        <div class="w-24 h-24 mx-auto rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl mb-6">
+          💬
+        </div>
+
+        <h3 class="text-2xl font-bold mb-3">
+          No posts yet
+        </h3>
+
+        <p class="text-zinc-500 max-w-md mx-auto">
+          <%= isOwnProfile ? "Start sharing your thoughts with the community." : "This user hasn't posted anything yet." %>
+        </p>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="flex flex-col gap-7">
+
+        <% displayedUser.posts.forEach(post => { %>
+
+          <div>
+            <%- include("partials/postCard", { post, user }) %>
+          </div>
+
+        <% }) %>
+
+      </div>
+
+    <% } %>
+
+  </main>
+
+
+
+
+
+  <!-- ================= SCRIPT ================= -->
   <script>
+
     const uploadInput = document.getElementById("uploadInput");
     const previewImg = document.getElementById("previewImg");
-    const profileImg = document.getElementById("profileImg");
     const previewActions = document.getElementById("previewActions");
 
     if (uploadInput) {
+
       uploadInput.addEventListener("change", (e) => {
+
         const file = e.target.files[0];
+
         if (!file) return;
+
         const url = URL.createObjectURL(file);
+
         previewImg.src = url;
+
         previewImg.classList.remove("hidden");
+
         previewActions.classList.remove("hidden");
+
       });
+
     }
 
     function cancelPreview() {
+
       previewImg.classList.add("hidden");
+
       previewActions.classList.add("hidden");
+
       uploadInput.value = "";
+
     }
+
   </script>
 
 </body>

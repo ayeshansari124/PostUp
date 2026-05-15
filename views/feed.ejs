@@ -1,41 +1,95 @@
+<!-- ========================= FEED.EJS ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Discover - PostUp</title>
+  <title>Discover — PostUp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <link rel="stylesheet" href="/style/global.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-zinc-900 text-white min-h-screen">
 
-  <!-- Header -->
+<body class="bg-black text-white min-h-screen overflow-x-hidden">
+
+  <!-- BACKGROUND -->
+  <div class="fixed inset-0 -z-50">
+    <div class="absolute inset-0 bg-gradient-to-br from-zinc-950 via-black to-zinc-900"></div>
+
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full"></div>
+
+    <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-indigo-600/20 blur-[120px] rounded-full"></div>
+  </div>
+
+  <!-- HEADER -->
   <%- include("partials/header", { user }) %>
 
-  <main class="max-w-2xl mx-auto px-4 pt-6 pb-16">
-    <!-- Create Post -->
-    <form action="/post" method="POST" class="flex gap-3 w-full mb-8">
-      <textarea name="content" required placeholder="What's happening?"
-                rows="3"
-                class="flex-1 bg-zinc-800 rounded-2xl border border-zinc-700 p-4 resize-none focus:ring-2 focus:ring-blue-500 outline-none placeholder-zinc-500 text-white text-base"></textarea>
+  <!-- MAIN -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 pt-8 pb-20">
 
-      <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl text-white font-semibold h-fit self-start">
-        Post
-      </button>
-    </form>
+    <!-- TOP HEADING -->
+    <div class="mb-8">
 
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
+        Discover what people are
+        <span class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+          sharing today.
+        </span>
+      </h1>
+
+      <p class="mt-4 text-zinc-400 text-base sm:text-lg max-w-2xl leading-relaxed">
+        Share thoughts, updates, and connect instantly with people around the world.
+      </p>
+
+    </div>
+
+    <!-- CREATE POST -->
+    <div class="relative mb-10">
+
+      <!-- glow -->
+      <div class="absolute inset-0 bg-blue-500/10 blur-3xl rounded-[40px]"></div>
+
+      <!-- ================= CREATE POST ================= -->
+          <%- include("partials/CreatePost") %>
+    </div>
+
+    <!-- POSTS -->
     <% if (!posts || posts.length === 0) { %>
-      <div class="text-zinc-400 text-center text-lg py-12">No posts yet.</div>
+
+      <div class="mt-20 text-center">
+
+        <div class="w-24 h-24 mx-auto rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-4xl mb-6">
+          💬
+        </div>
+
+        <h2 class="text-2xl font-bold mb-3">
+          No posts yet
+        </h2>
+
+        <p class="text-zinc-500 max-w-md mx-auto leading-relaxed">
+          Be the first one to share something with the community.
+        </p>
+
+      </div>
+
     <% } else { %>
-      <div class="flex flex-col divide-y divide-zinc-700">
+
+      <div class="flex flex-col gap-6">
+
         <% posts.forEach(post => { %>
-          <div class="py-4">
+
+          <div class="animate-fadeIn">
             <%- include("partials/postCard", { post, user }) %>
           </div>
+
         <% }) %>
+
       </div>
+
     <% } %>
+
   </main>
 
 </body>

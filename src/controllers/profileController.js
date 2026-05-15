@@ -1,84 +1,119 @@
-const mongoose = require('mongoose');
-const User = require('../models/User');
-const upload = require('../config/multerConfig');
+const mongoose = require("mongoose");
+const streamifier = require("streamifier");
 
+const User = require("../models/User");
+const upload = require("../config/multerConfig");
+const cloudinary = require("../config/cloudinary");
+
+const populatePosts = {
+  path: "posts",
+  populate: { path: "author", select: "name profile" },
+  options: { sort: { createdAt: -1 } },
+};
+
+// ================= VIEW OTHER USER PROFILE =================
 const viewProfile = async (req, res) => {
   try {
     const uid = req.params.id;
-    if (!mongoose.Types.ObjectId.isValid(uid)) return res.status(400).send('Invalid user id');
 
-    const profileUser = await User.findById(uid)
-      .populate({
-        path: 'posts',
-        populate: { path: 'author', select: 'name profile' },
-        options: { sort: { createdAt: -1 } }
-      })
-      .lean();
+    if (!mongoose.Types.ObjectId.isValid(uid)) {
+      return res.status(400).send("Invalid user id");
+    }
 
-    if (!profileUser) return res.status(404).send('User not found');
+    const profileUser = await User.findById(uid).populate(populatePosts).lean();
 
-    const me = await User.findById(req.userId)
-      .populate({
-        path: 'posts',
-        populate: { path: 'author', select: 'name profile' },
-        options: { sort: { createdAt: -1 } }
-      })
-      .lean();
+    if (!profileUser) {
+      return res.status(404).send("User not found");
+    }
 
-    return res.render('profile', { user: me, profileUser, editPostId: null });
+    const me = await User.findById(req.userId).populate(populatePosts).lean();
+
+    return res.render("profile", {
+      user: me,
+      profileUser,
+      editPostId: null,
+    });
   } catch (err) {
-    console.error('viewProfile error:', err);
-    return res.status(500).send('Server error');
+    console.error("viewProfile error:", err);
+    return res.status(500).send("Server error");
   }
 };
 
+// ================= MY PROFILE =================
 const myProfile = async (req, res) => {
   try {
-    const me = await User.findById(req.userId)
-      .populate({
-        path: 'posts',
-        populate: { path: 'author', select: 'name profile' },
-        options: { sort: { createdAt: -1 } }
-      })
-      .lean();
+    const me = await User.findById(req.userId).populate(populatePosts).lean();
 
-    if (!me) return res.status(404).send('User not found');
+    if (!me) {
+      return res.status(404).send("User not found");
+    }
 
-    const editPostId = req.query.editPostId ? String(req.query.editPostId) : null;
-    return res.render('profile', { user: me, profileUser: null, editPostId });
+    return res.render("profile", {
+      user: me,
+      profileUser: null,
+      editPostId: req.query.editPostId ? String(req.query.editPostId) : null,
+    });
   } catch (err) {
-    console.error('myProfile error:', err);
-    return res.status(500).send('Server error');
+    console.error("myProfile error:", err);
+    return res.status(500).send("Server error");
   }
 };
 
-const showUploadForm = async (req, res) => res.render('profileUpload');
-
+// ================= PROFILE IMAGE UPLOAD =================
 const handleUpload = [
-  upload.single('profile'),
+  upload.single("profile"),
+
   async (req, res) => {
     try {
-      if (!req.file) return res.status(400).send('No file uploaded');
-      await User.findByIdAndUpdate(req.userId, { profile: '/uploads/' + req.file.filename });
-      return res.redirect('/profile');
+      if (!req.file) {
+        return res.status(400).send("No file uploaded");
+      }
+
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: "postup_profiles" },
+          (error, result) => (result ? resolve(result) : reject(error)),
+        );
+
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+
+      await User.findByIdAndUpdate(req.userId, {
+        profile: result.secure_url,
+      });
+
+      return res.redirect("/profile");
     } catch (err) {
-      console.error('handleUpload error:', err);
-      return res.status(500).send('Upload failed');
+      console.error("handleUpload error:", err);
+      return res.status(500).send("Upload failed");
     }
-  }
+  },
 ];
 
+// ================= SEARCH USERS =================
 const search = async (req, res) => {
-  const me = req.user;
-  const query = req.query.q || "";
-  const results = await User.find(query ? { name: new RegExp(query, "i") } : {}).lean();
-  return res.render('search', { results, query, user: me });
+  try {
+    const me = await User.findById(req.userId).lean();
+    const query = (req.query.q || "").trim();
+
+    const results = await User.find(
+      query ? { name: new RegExp(query, "i") } : {},
+    ).lean();
+
+    return res.render("search", {
+      results,
+      query,
+      user: me,
+    });
+  } catch (err) {
+    console.error("search error:", err);
+    return res.status(500).send("Server error");
+  }
 };
 
 module.exports = {
   viewProfile,
   myProfile,
-  showUploadForm,
   handleUpload,
-  search
+  search,
 };

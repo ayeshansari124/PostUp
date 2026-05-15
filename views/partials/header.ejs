@@ -1,90 +1,56 @@
-<!-- ========================= NAVBAR ========================= -->
 <nav class="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/80 backdrop-blur-xl">
   <div class="max-w-5xl mx-auto px-4">
     <div class="h-16 flex items-center justify-between">
 
-      <!-- LEFT -->
       <div class="flex items-center gap-2 sm:gap-3">
 
-        <!-- LOGO -->
         <a href="/" class="hidden sm:flex items-center gap-2 group">
           <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
             <span class="text-white font-black text-sm">P</span>
           </div>
 
           <div class="leading-tight">
-            <h1 class="text-white font-bold tracking-tight text-base">
-              PostUp
-            </h1>
-            <p class="text-[10px] text-zinc-500 -mt-0.5">
-              Connect & Share
-            </p>
+            <h1 class="text-white font-bold tracking-tight text-base">PostUp</h1>
+            <p class="text-[10px] text-zinc-500 mt-1">Connect & Share</p>
           </div>
         </a>
 
-        <!-- HOME -->
         <a href="/feed"
           class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 hover:bg-zinc-800 transition-all duration-300 flex items-center justify-center text-zinc-300 hover:text-white">
 
-          <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-
-            <path stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 12l9-7 9 7M4 10v10a1 1 0 001 1h5a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h5a1 1 0 001-1V10"/>
           </svg>
         </a>
 
-        <!-- SEARCH -->
         <a href="/search"
           class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-blue-500/50 hover:bg-zinc-800 transition-all duration-300 flex items-center justify-center text-zinc-300 hover:text-white">
 
-          <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <circle cx="11" cy="11" r="7" stroke-width="2"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"
-              stroke-width="2"
-              stroke-linecap="round"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </a>
 
       </div>
 
-      <!-- CENTER -->
       <div class="hidden md:flex items-center">
         <div class="px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-sm text-zinc-400">
           Welcome back,
-          <span class="text-white font-semibold">
-            <%= user?.name?.split(' ')[0] || 'User' %>
-          </span>
+          <span class="text-white font-semibold"><%= user?.name?.split(' ')[0] || 'User' %></span>
         </div>
       </div>
 
-      <!-- RIGHT -->
       <div class="flex items-center gap-3">
 
-        <!-- PROFILE -->
-        <a href="/profile"
-          class="relative group">
-
+        <a href="/profile" class="relative group">
           <div class="absolute inset-0 rounded-full bg-blue-500 blur-md opacity-0 group-hover:opacity-40 transition duration-300"></div>
 
-          <img
-            src="<%= user?.profile || '/profile/defaultProfile.png' %>"
-            alt="profile"
-            class="relative w-11 h-11 rounded-full object-cover border-2 border-zinc-700 group-hover:border-blue-500 transition-all duration-300"
-          />
+          <img src="<%= user?.profile || '/profile/defaultProfile.png' %>" alt="profile"
+            class="relative w-11 h-11 rounded-full object-cover border-2 border-zinc-700 group-hover:border-blue-500 transition-all duration-300"/>
         </a>
 
-        <!-- LOGOUT -->
         <form action="/logout" method="get" class="inline">
           <button
             class="px-4 py-2 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300 text-sm font-semibold shadow-lg shadow-red-500/10">

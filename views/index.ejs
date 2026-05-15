@@ -1,90 +1,65 @@
-<!-- ========================= INDEX.EJS ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <title>PostUp — Connect Instantly</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="/style/global.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="relative min-h-screen bg-black text-white overflow-x-hidden">
 
-  <!-- ================= BACKGROUND ================= -->
   <div class="absolute inset-0 -z-50">
 
-    <!-- image -->
     <img
       src="https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1350&q=80"
       alt="background"
-      class="w-full h-full object-cover brightness-[0.28]"
+      class="w-full h-full object-cover brightness-[0.22]"
     />
 
-    <!-- overlays -->
-    <div class="absolute inset-0 bg-black/60"></div>
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-black/50 to-black"></div>
 
-    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black"></div>
+    <div class="absolute top-0 left-0 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-blue-500/20 blur-[120px] sm:blur-[140px] rounded-full"></div>
 
-    <!-- blur circles -->
-    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-blue-500/20 blur-[140px] rounded-full"></div>
-
-    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-500/20 blur-[140px] rounded-full"></div>
+    <div class="absolute bottom-0 right-0 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-indigo-500/20 blur-[120px] sm:blur-[140px] rounded-full"></div>
 
   </div>
 
-
-
-
-
-  <!-- ================= NAVBAR ================= -->
   <nav class="relative z-50 border-b border-white/10 backdrop-blur-xl bg-black/20">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-      <div class="h-20 flex items-center justify-between">
+      <div class="h-16 sm:h-20 flex items-center justify-between gap-3">
 
-        <!-- LOGO -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 min-w-0">
 
-          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-blue-500/20">
-            <span class="text-white text-xl">💬</span>
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-blue-500/20 shrink-0">
+            <span class="text-white text-lg sm:text-xl">💬</span>
           </div>
 
-          <div>
-            <h1 class="text-2xl sm:text-3xl font-black tracking-tight">
-              PostUp
-            </h1>
-
-            <p class="text-xs text-zinc-400 -mt-1">
-              Connect instantly
-            </p>
+          <div class="min-w-0">
+            <h1 class="text-lg sm:text-3xl font-black tracking-tight truncate">PostUp</h1>
+            <p class="hidden sm:block text-xs text-zinc-400 mt-0.5">Connect instantly</p>
           </div>
 
         </div>
 
-        <!-- BUTTONS -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
 
           <button
             onclick="openModal('loginModal')"
-            class="px-5 py-2.5 rounded-2xl border border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 transition-all duration-300 font-semibold text-sm">
-
+            class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-zinc-700 bg-zinc-900/60 hover:bg-zinc-800 transition-all duration-300 font-semibold text-xs sm:text-sm">
             Login
-
           </button>
 
           <button
             onclick="openModal('registerModal')"
-            class="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 transition-all duration-300 font-semibold text-sm shadow-xl shadow-blue-500/20">
-
+            class="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-105 transition-all duration-300 font-semibold text-xs sm:text-sm shadow-xl shadow-blue-500/20">
             Sign Up
-
           </button>
 
         </div>
@@ -95,24 +70,18 @@
 
   </nav>
 
+  <section class="relative z-10 min-h-[calc(100vh-64px)] sm:min-h-[88vh] flex items-center py-14 sm:py-20">
 
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 w-full">
 
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
 
+        <div class="text-center lg:text-left">
 
-  <!-- ================= HERO ================= -->
-  <section class="relative z-10 min-h-[88vh] flex items-center">
-
-    <div class="max-w-7xl mx-auto px-6 w-full">
-
-      <div class="grid lg:grid-cols-2 gap-14 items-center">
-
-        <!-- LEFT -->
-        <div>
-
-          <!-- heading -->
-          <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight">
 
             Share your
+
             <span class="bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
               thoughts
             </span>
@@ -121,81 +90,54 @@
 
           </h1>
 
-          <!-- paragraph -->
-          <p class="mt-7 text-lg sm:text-xl text-zinc-300 max-w-2xl leading-relaxed">
-
+          <p class="mt-5 text-[15px] sm:text-xl text-zinc-300 max-w-2xl leading-relaxed mx-auto lg:mx-0">
             PostUp is a modern social platform where you can share updates,
             discover people, and connect instantly in a clean and beautiful experience.
-
           </p>
 
-          <!-- buttons -->
-          <div class="mt-10 flex flex-wrap items-center gap-4">
+          <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
 
             <button
               onclick="openModal('registerModal')"
-              class="px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.03] transition-all duration-300 font-bold text-lg shadow-2xl shadow-blue-500/20">
-
+              class="px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.03] transition-all duration-300 font-bold text-base sm:text-lg shadow-2xl shadow-blue-500/20">
               Get Started
-
             </button>
 
           </div>
 
         </div>
 
-
-
-
-
-        <!-- RIGHT -->
         <div class="relative hidden lg:block">
 
-          <!-- glow -->
           <div class="absolute inset-0 bg-blue-500/20 blur-[120px] rounded-full"></div>
 
-          <!-- floating card -->
-          <div class="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-7 shadow-2xl">
+          <div class="relative bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[40px] p-7 shadow-2xl overflow-hidden">
 
-            <!-- top -->
             <div class="flex items-center justify-between mb-6">
 
               <div class="flex items-center gap-3">
 
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-white">
                   A
                 </div>
 
                 <div>
-                  <h3 class="font-bold">
-                    Ayesha Khan
-                  </h3>
-
-                  <p class="text-sm text-zinc-400">
-                    2 mins ago
-                  </p>
+                  <h3 class="font-bold text-lg">Ayesha Khan</h3>
+                  <p class="text-sm text-zinc-400">2 mins ago</p>
                 </div>
 
               </div>
 
-              <div class="text-zinc-500">
-                •••
-              </div>
+              <div class="text-zinc-500 text-xl">•••</div>
 
             </div>
 
-            <!-- content -->
             <div class="space-y-4">
-
               <div class="h-4 rounded-full bg-white/10 w-full"></div>
-
               <div class="h-4 rounded-full bg-white/10 w-[90%]"></div>
-
               <div class="h-4 rounded-full bg-white/10 w-[75%]"></div>
-
             </div>
 
-            <!-- image -->
             <div class="mt-6 rounded-3xl overflow-hidden border border-white/10">
 
               <img
@@ -206,24 +148,14 @@
 
             </div>
 
-            <!-- actions -->
             <div class="mt-6 flex items-center justify-between">
 
               <div class="flex items-center gap-5 text-zinc-300">
-
-                <div class="flex items-center gap-2">
-                  ❤️ <span>248</span>
-                </div>
-
-                <div class="flex items-center gap-2">
-                  💬 <span>64</span>
-                </div>
-
+                <div class="flex items-center gap-2">❤️ <span>248</span></div>
+                <div class="flex items-center gap-2">💬 <span>64</span></div>
               </div>
 
-              <div class="text-zinc-500 text-sm">
-                Trending Post
-              </div>
+              <div class="text-zinc-500 text-sm">Trending Post</div>
 
             </div>
 
@@ -237,75 +169,61 @@
 
   </section>
 
-
-
-
-
-  <!-- ================= LOGIN MODAL ================= -->
   <div
     id="loginModal"
     class="hidden fixed inset-0 z-[100] bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
 
     <div class="relative w-full max-w-md">
 
-      <!-- glow -->
       <div class="absolute inset-0 bg-blue-500/20 blur-3xl rounded-[40px]"></div>
 
-      <!-- modal -->
-      <div class="relative bg-zinc-950 border border-zinc-800 rounded-[32px] p-8 shadow-2xl">
+      <div class="relative bg-zinc-950 border border-zinc-800 rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-2xl">
 
-        <!-- close -->
         <button
           onclick="closeModal('loginModal')"
-          class="absolute top-5 right-5 text-zinc-500 hover:text-white transition">
-
+          class="absolute top-5 right-5 text-zinc-500 hover:text-white transition text-lg">
           ✕
-
         </button>
 
-        <h2 class="text-3xl font-black mb-2">
-          Welcome Back
-        </h2>
+        <h2 class="text-2xl sm:text-3xl font-black mb-2">Welcome Back</h2>
 
-        <p class="text-zinc-400 mb-8">
+        <p class="text-zinc-400 mb-8 text-sm sm:text-base">
           Login to continue to PostUp.
         </p>
 
         <form action="/login" method="POST" class="space-y-5">
 
           <div>
-            <label class="text-sm text-zinc-400 block mb-2">
-              Email
-            </label>
+
+            <label class="text-sm text-zinc-400 block mb-2">Email</label>
 
             <input
               type="email"
               name="email"
               required
               placeholder="Enter your email"
-              class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition"
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition"
             />
+
           </div>
 
           <div>
-            <label class="text-sm text-zinc-400 block mb-2">
-              Password
-            </label>
+
+            <label class="text-sm text-zinc-400 block mb-2">Password</label>
 
             <input
               type="password"
               name="password"
               required
               placeholder="Enter your password"
-              class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition"
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition"
             />
+
           </div>
 
           <button
-            class="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.01] transition-all duration-300 font-bold text-lg shadow-xl shadow-blue-500/20">
-
+            class="w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.01] transition-all duration-300 font-bold text-base sm:text-lg shadow-xl shadow-blue-500/20">
             Login
-
           </button>
 
         </form>
@@ -316,89 +234,75 @@
 
   </div>
 
-
-
-
-
-  <!-- ================= REGISTER MODAL ================= -->
   <div
     id="registerModal"
     class="hidden fixed inset-0 z-[100] bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
 
     <div class="relative w-full max-w-md">
 
-      <!-- glow -->
       <div class="absolute inset-0 bg-green-500/20 blur-3xl rounded-[40px]"></div>
 
-      <!-- modal -->
-      <div class="relative bg-zinc-950 border border-zinc-800 rounded-[32px] p-8 shadow-2xl">
+      <div class="relative bg-zinc-950 border border-zinc-800 rounded-[28px] sm:rounded-[32px] p-5 sm:p-8 shadow-2xl">
 
-        <!-- close -->
         <button
           onclick="closeModal('registerModal')"
-          class="absolute top-5 right-5 text-zinc-500 hover:text-white transition">
-
+          class="absolute top-5 right-5 text-zinc-500 hover:text-white transition text-lg">
           ✕
-
         </button>
 
-        <h2 class="text-3xl font-black mb-2">
-          Create Account
-        </h2>
+        <h2 class="text-2xl sm:text-3xl font-black mb-2">Create Account</h2>
 
-        <p class="text-zinc-400 mb-8">
+        <p class="text-zinc-400 mb-8 text-sm sm:text-base">
           Join PostUp and start connecting instantly.
         </p>
 
         <form action="/register" method="POST" class="space-y-5">
 
           <div>
-            <label class="text-sm text-zinc-400 block mb-2">
-              Full Name
-            </label>
+
+            <label class="text-sm text-zinc-400 block mb-2">Full Name</label>
 
             <input
               type="text"
               name="name"
               required
               placeholder="Enter your name"
-              class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
             />
+
           </div>
 
           <div>
-            <label class="text-sm text-zinc-400 block mb-2">
-              Email
-            </label>
+
+            <label class="text-sm text-zinc-400 block mb-2">Email</label>
 
             <input
               type="email"
               name="email"
               required
               placeholder="Enter your email"
-              class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
             />
+
           </div>
 
           <div>
-            <label class="text-sm text-zinc-400 block mb-2">
-              Password
-            </label>
+
+            <label class="text-sm text-zinc-400 block mb-2">Password</label>
 
             <input
               type="password"
               name="password"
               required
               placeholder="Create password"
-              class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
+              class="w-full bg-zinc-900 border border-zinc-800 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition"
             />
+
           </div>
 
           <button
-            class="w-full py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[1.01] transition-all duration-300 font-bold text-lg shadow-xl shadow-green-500/20">
-
+            class="w-full py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 hover:scale-[1.01] transition-all duration-300 font-bold text-base sm:text-lg shadow-xl shadow-green-500/20">
             Create Account
-
           </button>
 
         </form>
@@ -409,13 +313,7 @@
 
   </div>
 
-
-
-
-
-  <!-- ================= SCRIPT ================= -->
   <script>
-
     function openModal(id) {
       document.getElementById(id).classList.remove("hidden");
       document.body.style.overflow = "hidden";
@@ -426,15 +324,15 @@
       document.body.style.overflow = "auto";
     }
 
-    // close on outside click
     window.addEventListener("click", (e) => {
+
       const login = document.getElementById("loginModal");
       const register = document.getElementById("registerModal");
 
       if (e.target === login) closeModal("loginModal");
       if (e.target === register) closeModal("registerModal");
-    });
 
+    });
   </script>
 
 </body>

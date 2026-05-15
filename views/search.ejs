@@ -1,47 +1,27 @@
-<!-- ========================= SEARCH.EJS ========================= -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
   <title>Search — PostUp</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" href="/style/global.css">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="bg-black text-white min-h-screen overflow-x-hidden">
 
-  <!-- ================= BACKGROUND ================= -->
   <div class="fixed inset-0 -z-50">
-
     <div class="absolute inset-0 bg-gradient-to-br from-zinc-950 via-black to-zinc-900"></div>
-
     <div class="absolute top-0 left-0 w-[450px] h-[450px] bg-blue-500/10 blur-[120px] rounded-full"></div>
-
     <div class="absolute bottom-0 right-0 w-[450px] h-[450px] bg-indigo-500/10 blur-[120px] rounded-full"></div>
-
   </div>
 
-
-
-
-
-  <!-- HEADER -->
   <%- include("partials/header", { user }) %>
 
-
-
-
-
-  <!-- ================= MAIN ================= -->
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10">
 
-    <!-- heading -->
     <div class="text-center mb-12">
 
       <h1 class="text-4xl sm:text-5xl font-black tracking-tight">
@@ -57,23 +37,15 @@
 
     </div>
 
-
-
-
-
-    <!-- ================= SEARCH BAR ================= -->
     <section class="relative mb-12">
 
       <div class="absolute inset-0 bg-blue-500/10 blur-3xl rounded-[40px]"></div>
 
-      <form
-        action="/search"
-        method="get"
+      <form action="/search" method="get"
         class="relative bg-transparent rounded-[30px] p-3 shadow-2xl flex flex-col sm:flex-row gap-3">
 
         <div class="flex-1 relative">
 
-          <!-- icon -->
           <div class="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-500">
 
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -104,20 +76,13 @@
         <button
           type="submit"
           class="px-7 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:scale-[1.03] transition-all duration-300 font-semibold shadow-xl shadow-blue-500/20">
-
           Search
-
         </button>
 
       </form>
 
     </section>
 
-
-
-
-
-    <!-- ================= RESULTS ================= -->
     <% if (!results || results.length === 0) { %>
 
       <div class="bg-transparent border border-zinc-800 rounded-[32px] py-20 text-center">
@@ -126,9 +91,7 @@
           🔍
         </div>
 
-        <h2 class="text-2xl font-bold mb-3">
-          No users found
-        </h2>
+        <h2 class="text-2xl font-bold mb-3">No users found</h2>
 
         <p class="text-zinc-500 max-w-md mx-auto">
           Try searching with a different username or keyword.
@@ -146,12 +109,10 @@
             href="/user/<%= u._id %>"
             class="group relative overflow-hidden rounded-[30px] border border-zinc-800 bg-transparent hover:border-blue-500/30 transition-all duration-300 shadow-xl">
 
-            <!-- hover glow -->
             <div class="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition duration-500"></div>
 
             <div class="relative p-5 sm:p-6 flex items-center gap-5">
 
-              <!-- profile -->
               <div class="relative shrink-0">
 
                 <div class="absolute inset-0 rounded-full bg-blue-500 blur-xl opacity-0 group-hover:opacity-30 transition"></div>
@@ -164,11 +125,6 @@
 
               </div>
 
-
-
-
-
-              <!-- info -->
               <div class="flex-1 min-w-0">
 
                 <div class="flex items-center justify-between gap-4">
@@ -185,15 +141,8 @@
 
                   </div>
 
-
-
-
-
-                  <!-- arrow -->
                   <div class="hidden sm:flex w-12 h-12 rounded-2xl bg-transparent border border-zinc-800 items-center justify-center text-zinc-500 group-hover:text-white group-hover:border-blue-500 transition-all duration-300">
-
                     →
-
                   </div>
 
                 </div>

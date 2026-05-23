@@ -6,7 +6,7 @@ PostUp allows users to create accounts, share posts, interact with content, mana
 
 ## 🌐 Live Demo
 
-https://postup.onrender.com/
+https://post-up-xi.vercel.app/
 
 ---
 

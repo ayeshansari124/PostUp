@@ -156,8 +156,8 @@
               <p class="mt-2 sm:mt-3 text-zinc-400 text-sm sm:text-base lg:text-lg">
                 Joined
                 <span class="text-zinc-300 font-medium">
-                  <%= new Date(displayedUser.createdAt).toLocaleDateString() %>
-                </span>
+  <%= formatDate(displayedUser.createdAt) %>
+</span>
               </p>
 
             </div>

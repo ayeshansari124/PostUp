@@ -15,6 +15,10 @@ const profileRoutes = require('./src/routes/profile');
 
 const app = express();
 
+//Date Formatting
+const formatDate = require("./src/config/formatDate");
+app.locals.formatDate = formatDate;
+
 // ensure uploads dir exists
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });

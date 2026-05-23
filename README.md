@@ -46,17 +46,50 @@ https://postup.onrender.com/
 
 ## 📸 Screenshots
 
+### 🏠 Landing Page
+Clean landing page introducing the platform with authentication access points.
+
 ![Landing Page](./screenshots/landing-page.png)
+
+---
+
+### 🔐 Authentication Modal
+Secure login and signup interface with JWT-based authentication.
 
 ![Login Modal](./screenshots/login-modal.png)
 
+---
+
+### 📰 Community Feed
+Responsive feed displaying the latest posts from all users in realtime order.
+
 ![Home Feed](./screenshots/home-feed.png)
+
+---
+
+### 👤 Personal Profile
+User profile page displaying profile image, joined date, post statistics, and personal posts.
 
 ![Profile Page](./screenshots/profile-page.png)
 
+---
+
+### 🌍 Public User Profiles
+View other users' profiles and explore their shared content.
+
 ![Other User Profile](./screenshots/other-profile.png)
 
+---
+
+### ✏️ Post Management
+Edit and manage existing posts directly from the platform interface.
+
 ![Edit Post](./screenshots/edit-post.png)
+
+---
+
+### 🔍 User Search
+Search functionality for discovering users and navigating to their profiles.
 
 ![Search Users](./screenshots/search-page.png)
 

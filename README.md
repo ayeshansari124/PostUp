@@ -40,40 +40,9 @@ https://post-up-xi.vercel.app/
 
 ---
 
-## 📸 Screenshots
+## 🎥 Project Demo
 
-### 🏠 Landing Page
-![Landing Page](./screenshots/landing-page.png)
-
----
-
-### 🔐 Authentication
-![Authentication](./screenshots/login-modal.png)
-
----
-
-### 📰 Community Feed
-![Feed](./screenshots/home-feed.png)
-
----
-
-### 👤 Personal Profile
-![Profile](./screenshots/profile-page.png)
-
----
-
-### 🌍 Public User Profiles
-![Public Profile](./screenshots/other-profile.png)
-
----
-
-### ✏️ Post Management
-![Edit Post](./screenshots/edit-post.png)
-
----
-
-### 🔍 User Search
-![Search Users](./screenshots/search-page.png)
+[![Watch Demo](./demo-thumbnail.png)](./POSTUP-VID.mp4)
 
 ---
 

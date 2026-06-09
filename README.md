@@ -39,8 +39,9 @@ https://post-up-xi.vercel.app/
 - JavaScript
 
 ---
-
 ## 🎥 Project Demo
+
+Watch the complete application walkthrough below.
 
 [![Watch Demo](./demo-thumbnail.png)](https://ayeshansari124.github.io/PostUp/demo.html)
 

@@ -42,7 +42,7 @@ https://post-up-xi.vercel.app/
 
 ## 🎥 Project Demo
 
-[![Watch Demo](./demo-thumbnail.png)](./POSTUP-VID.mp4)
+[![Watch Demo](./demo-thumbnail.png)](https://ayeshansari124.github.io/PostUp/demo.html)
 
 ---
 
